@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from time import strptime
 
 
@@ -47,8 +49,6 @@ class Time:
 
 
 if __name__ == "__main__":
-	time = Time.fromString("20:20:20")
-	time2 = Time.fromString("23:59:59");
-	time2 = time2 - time
-	print(time2.humanFormat())
+    import doctest
+    doctest.testmod(verbose=True, extraglobs={'t': Time()})
 

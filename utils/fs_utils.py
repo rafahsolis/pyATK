@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import fnmatch
 
@@ -5,7 +7,7 @@ import fnmatch
 ###
 # List files within folder tree (generator)
 #
-def walk_through_files(topdir, folder_filter="", file_filter=""):
+def walkThroughFiles(topdir, folder_filter="", file_filter=""):
     for dirpath, _, filenames in os.walk(topdir):
         if folder_filter in dirpath:
             pass
@@ -19,10 +21,14 @@ def walk_through_files(topdir, folder_filter="", file_filter=""):
                     yield os.path.join(dirpath, fname)
 
 
+def walkThrough(topdir):
+    for dirpath, subdirs, files in os.walk(topdir):
+        pass
+
 ###
 # List child folders of top directory (generator)
 #
-def walk_through_folders(topdir):
+def walkThroughFolders(topdir):
     for dirpath, _, _ in os.walk(topdir):
         yield dirpath
 
@@ -30,12 +36,12 @@ def walk_through_folders(topdir):
 ###
 # Returns the size of a folder's content. Returns 0 if the argument is not a folder
 #
-def folder_size(topdir):
+def folderSize(topdir):
     if os.path.isdir(topdir) is False:
         return 0
     else:
         total_size = 0
-        for filename in walk_through_files(topdir):
+        for filename in walkThroughFiles(topdir):
             total_size += os.path.getsize(filename)
         return total_size
 
@@ -43,7 +49,12 @@ def folder_size(topdir):
 ###
 #
 #
-def compare_files(left, right):
+def compareFiles(left, right):
+    if not os.path.isfile(left):
+        raise Exception(str(left) + " is not a file!")
+    if not os.path.isfile(right):
+        raise Exception(str(right) + " is not a file!")
+
     if os.path.getsize(left) == os.path.getsize(right):
         return 0
     else:
@@ -55,21 +66,6 @@ def compare_files(left, right):
         if right_content > left_content:
             return 1
         return -1
-
-
-###
-# Returns a list of used drives on Windows
-#
-def get_drives():
-    import string
-    from ctypes import windll
-    drives = []
-    bitmask = windll.kernel32.GetLogicalDrives()
-    for letter in string.ascii_uppercase:
-        if bitmask & 1:
-            drives.append(letter)
-        bitmask >>= 1
-    return drives
 
 
 def getAbsolutePath(relativePath):

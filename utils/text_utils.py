@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 
 
@@ -117,6 +119,25 @@ def ordinal(n):
 		return str(n) + "th"
 	return str(n) + {1 : "st", 2 : "nd", 3 : "rd"}.get(n%10, "th")
 
+
+
+def rightOf(str, separator=None):
+	if separator is None:
+		return None
+	else:
+		if separator in str:
+			return str.split(separator, 1)[1]
+		else:
+			return None
+			
+def leftOf(str, separator=None):
+	if separator is None:
+		return None
+	else:
+		if separator in str:
+			retunr str.split(separator, 1)[0]
+		else:
+			return None
 
 
 if __name__ == "__main__":

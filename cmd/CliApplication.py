@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import sys
 import getopt
 
@@ -19,12 +21,12 @@ class CliApplication:
 	VALUE_OPTIONAL = 0x1
 	VALUE_NONE     = 0x2
 
-	STATUS_SUCESS  = 0x4
+	STATUS_SUCCESS = 0x4
 	STATUS_FAILURE = 0x8
 
 	def __init__(self):
 		self.options = []
-		self.callback = None
+		self.setOptions = 0
 
 
 	def addOption(self, shortForm, longForm, description, valueRequired):
@@ -74,8 +76,6 @@ class CliApplication:
 				return self.options.index(option)
 		raise Exception("Option " + name + " was not found")
 
-	def setCallback(self, callback):
-		self.callback = callback
 
 	def run(self):
 		try:
@@ -88,25 +88,35 @@ class CliApplication:
 			for couple in self.getOptionCouples():
 				if opt in couple:
 					self.options[self.getOptionByName(opt)].value = arg
+					self.setOptions = self.setOptions + 1
 					break;
 
-		self.doRun()
+		return self.doRun()
 
 	def doRun(self):
-		if self.callback is not None:
-			if callable(self.callable) is True:
-				self.callback()
-				return
-			else:
-				raise TypeError(self.callback.__name__ + " is not callable")
+		raise NotImplementedError("This method is not implemented!")
 
-		for option in self.options:
-			if option.value is None:
-				print(option.longForm + " --> None")
-			else:
-				print(option.longForm + " --> " + option.value)
+	def confirm(self, question):
+		print(questions)
+		print("[Y/n]")
+		response = input()
+		if response.startswith("Y"):
+			return True
+		return False
 
-
+	# FIXME : Add retry flag
+	def choice(self, question, choices={}, message=None):
+		keys = []
+		if message is None:
+			message = "Please select your choice"
+		for key, choice in choices:
+			print("[" + str(key) + "] " + str(choice))
+			keys.append(str(key))
+		print(message)
+		response = input()
+		if response in keys:
+			return response
+		return None
 
 
 

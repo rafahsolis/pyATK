@@ -1,1 +1,3 @@
-# ATK
+# pyATK
+
+A Python Toolbox

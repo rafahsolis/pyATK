@@ -1,7 +1,7 @@
 import logging
 import os
 
-class Logger():
+class Logger:
     CRITICAL = logging.CRITICAL
     ERROR	 = logging.ERROR
     WARNING  = logging.WARNING
