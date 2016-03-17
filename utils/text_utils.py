@@ -98,6 +98,13 @@ def remove_accents(text):
 
 
 
+def deregexify(s):
+    pass
+ 
+
+def regexify(s):
+    return re.escape(s)
+
 def ordinal(n):
 	"""
 	Formats an ordinal.

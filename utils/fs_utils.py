@@ -51,9 +51,9 @@ def folderSize(topdir):
 #
 def compareFiles(left, right):
     if not os.path.isfile(left):
-        raise Exception(str(left) + " is not a file!")
+        raise FileNotFoundError(str(left) + ": No such file or directory")
     if not os.path.isfile(right):
-        raise Exception(str(right) + " is not a file!")
+        raise FileNotFoundError(str(right) + ": No such file or directory")
 
     if os.path.getsize(left) == os.path.getsize(right):
         return 0
@@ -78,7 +78,7 @@ def rm(filePath):
         if os.access(absPath, os.W_OK):
             os.remove(absPath)
         else:
-            print("Permission denied: " + absPath + " is not writable.")
+            raise PermissionError("Permission denied")
 
 
 def replaceInFile(filePath, pattern, replaceByStr, caseSensitive=True):
@@ -116,7 +116,7 @@ def readFileContent(path, removeEmptyLines=False, _encoding="utf-8"):
             else:
                 content = content + line
     else:
-        raise Exception("File not found")
+        raise FileNotFoundError(absPath + "No such file or directory")
     return content
 
 
