@@ -64,6 +64,34 @@ def timeout(seconds=10, msg="Function timed out"):
 		return result
 	return wrapper
 
-			
+
+from contextlib import ContextDecorator
+import time
+class timeit(ContextDecorator):
+	def __init__(self, *args):
+		self.start = None
+		self.end = None
 		
+	def __enter__(self):
+		self.start = time.time()
+
+	def __exit__(self, *exc):
+		self.end = time.time()
+		print("Execution time is " + str(self.end - self.start) + " seconds")
 		
+	
+def retry(nb=3, delay=1):
+	def decorator(f):
+		def wrapper(*args, **kwargs):
+			for i in range(0, nb):
+				print("Try " + str(i+1) + " out of " + str(nb))
+				returnValue = f(*args, **kwargs)
+				if returnValue is True:
+					print("Success!")
+					return True
+				time.sleep(delay)
+			print("Out of tires...")
+			return False
+		return wrapper
+	return decorator
+	
