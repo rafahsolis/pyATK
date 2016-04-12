@@ -2,191 +2,173 @@
 
 import sys
 import getopt
+from pyATK.cmd.InputArgument import InputArgument
+from pyATK.cmd.InputOption import InputOption
 from pyATK.utils.misc import if_else
-
-
-class Option:
-	def __init__(self, shortForm, longForm=None, description=None, valueRequired=None):
-		self.shortForm = shortForm
-		self.longForm = longForm
-		self.description = description
-		self.valueRequired = valueRequired
-		self.value = None
-
-	def __str__(self):
-		return self.shortForm + if_else(self.longForm is not None, ", --" + self.longForm, "") + \
-				if_else(self.description is not None, "\t\t" + self.description, "")
-
-
-class Argument:
-	def __init__(self, argumentName, description, valueRequired):
-		self.name = argumentName
-		self.description = description
-		self.valueRequired = valueRequired
-		self.value = None
-
-	def __str__(self):
-			return "<" + self.name + ">"
 
 
 class CliApplication:
 
-	VALUE_REQUIRED = 0x0
-	VALUE_OPTIONAL = 0x1
-	VALUE_NONE = 0x2
+    STATUS_SUCCESS = 0x0
+    STATUS_FAILURE = 0x1
 
-	STATUS_SUCCESS = 0x0
-	STATUS_FAILURE = 0x1
+    def __init__(self):
+        self.options = []
+        self.arguments = []
+        self.setOptions = 0
+        self.setArguments = 0
+        self.name = sys.argv[0]
+        self.version = "x.y.z"
+        self.expectingOptions = False
+        self.expectingArguments = False
 
-	def __init__(self):
-		self.options = []
-		self.arguments = []
-		self.setOptions = 0
-		self.setArguments = 0
-		self.name = None
-		self.version = None
-		self.expectingOptions = False
-		self.expectingArguments = False
+        self.add_option("h", "help", "Displays this help message", InputOption.OPTION_NONE)
 
-		self.addOption("h", "help", "Displays this help message", CliApplication.VALUE_NONE)
+    def set_name(self, name):
+        self.name = name
 
+    def set_version(self, version):
+        self.version = version
 
-	def addOption(self, shortForm, longForm=None, description=None, valueRequired=VALUE_NONE):
-		self.assertValidValue(valueRequired)
+    def add_option(self, short_form, long_form=None, description=None, value_required=InputOption.OPTION_NONE):
+        self.assert_valid_value_for_option(value_required)
 
-		opt = Option(shortForm, longForm, description, valueRequired)
-		self.options.append(opt)
-		if self.expectingOptions is False:
-			self.expectingOptions = True
-		return self
+        opt = InputOption(short_form, long_form, description, value_required)
+        self.options.append(opt)
+        if self.expectingOptions is False:
+            self.expectingOptions = True
+        return self
 
-	def addArgument(self, argumentName, description, valueRequired):
-		self.assertValidValue(valueRequired)
-		
-		arg = Argument(argumentName, description, valueRequired)
-		self.arguments.append(arg)
-		if self.expectingArguments is False:
-			self.expectingArguments = True
-		return self
+    def add_argument(self, argument_name, description, value_required):
+        self.assert_valid_value_for_argument(value_required)
+        
+        arg = InputArgument(argument_name, description, value_required)
+        self.arguments.append(arg)
+        if self.expectingArguments is False:
+            self.expectingArguments = True
+        return self
 
-	def getValueForOption(self, option):
-		for opt in self.options:
-			if option in [opt.shortForm, opt.longForm]:
-				return opt.value
-		return None
+    def get_value_for_option(self, option):
+        for opt in self.options:
+            if option in [opt.shortForm, opt.longForm]:
+                return opt.value
+        return None
 
-	def printUsage(self):
-		if self.name is not None:
-			print("\n" + self.name + if_else(self.version is not None, str(self.version), "") + " [OPTIONS] <ARGUMENTS>")
+    def usage(self):
+        print(self.name + ", version : " + self.version)
+        print("Usage:")
 
-		print("\n\nUsage:")
-		for option in self.options:
-			print(option)
-		print("")
+        print(self.name + if_else(self.expectingOptions == True, " [OPTIONS] ", "") + " ".join(self.arguments) + "\n")
 
-	def run(self):
-		try:
-			opts, args = getopt.getopt(sys.argv[1:], self.getShortFormString(), self.getLongFormList())
-		except getopt.GetoptError as err:
-			print(err)
-			sys.exit(1)
+        print("Options:\n")
 
-		for opt, arg in opts:
-			if self.expectingOptions is False:
-				print("Extra option(s) provided. Don't know what to do with that")
-				self.printUsage()
-				return CliApplication.STATUS_FAILURE
-			if "-h" == opt or "--help" == opt:
-				self.printUsage()
-				return CliApplication.STATUS_SUCCESS
-			for couple in self.getOptionCouples():
-				if opt in couple:
-					self.options[self.getOptionByName(opt)].value = arg
-					self.setOptions += 1
-					break
+        for option in self.options:
+            print(option)
+        print("")
 
-		index = 0
-		for arg in args:
-			if self.expectingArguments is False:
-				print("Extra argument(s) provided. Don't know what to do with that.")
-				self.printUsage()
-				return CliApplication.STATUS_FAILURE
-			else:
-				print(arg)
-				self.arguments[index].value = arg
-				self.setArguments += 1
-				index += 1
+    def run(self):
+        try:
+            opts, args = getopt.getopt(sys.argv[1:], self.get_short_form_string(), self.get_long_form_string())
+        except getopt.GetoptError as err:
+            print(err)
+            sys.exit(1)
 
-		return self.doRun()
+        for opt, arg in opts:
+            if self.expectingOptions is False:
+                print("Extra option(s) provided. Don't know what to do with that")
+                self.usage()
+                return CliApplication.STATUS_FAILURE
+            if "-h" == opt or "--help" == opt:
+                self.usage()
+                return CliApplication.STATUS_SUCCESS
+            for couple in self.get_option_couples():
+                if opt in couple:
+                    self.options[self.get_option_by_name(opt)].value = arg
+                    self.setOptions += 1
+                    break
 
-	def doRun(self):
-		raise NotImplementedError("This method is not implemented!")
+        if self.expectingArguments is True and len(args) == 0:
+            print("Not enough arguments provided")
+            return CliApplication.STATUS_FAILURE
+        else:
+            index = 0
+            for arg in args:
+                if self.expectingArguments is False:
+                    print("Extra argument(s) provided. Don't know what to do with that.")
+                    self.usage()
+                    return CliApplication.STATUS_FAILURE
+                else:
+                    self.arguments[index].value = arg
+                    self.setArguments += 1
+                    index += 1
 
-	#
-	# Input methods
-	#
-	def confirm(self, question):
-		print(question + " [Y/n]")
-		response = input()
-		if response.startswith("Y"):
-			return True
-		return False
+        return self.do_run()
 
-	# @TODO : Add retry flag
-	def choice(self, question, choices={}, message=None):
-		keys = []
-		if message is None:
-			message = "Please select your choice"
-		for key, choice in choices:
-			print("[" + str(key) + "] " + str(choice))
-			keys.append(str(key))
-		print(message)
-		response = input()
-		if response in keys:
-			return response
-		return None
+    def do_run(self):
+        raise NotImplementedError("This method is not implemented!")
 
-	#
-	# Utility methods
-	#
-	def getShortFormString(self):
-		result = ""
-		for opt in self.options:
-			if opt.valueRequired is CliApplication.VALUE_NONE:
-				result = result + opt.shortForm
-			else:
-				result = result + opt.shortForm + ":"
+    #
+    # Input methods
+    #
+    def confirm(self, question):
+        print(question + " [Y/n]")
+        response = input()
+        if response.startswith("Y"):
+            return True
+        return False
 
-		return result
+    # @TODO : Add retry flag
+    def choice(self, question, choices={}, message=None):
+        keys = []
+        if message is None:
+            message = "Please select your choice"
+        for key, choice in choices:
+            print("[" + str(key) + "] " + str(choice))
+            keys.append(str(key))
+        print(message)
+        response = input()
+        if response in keys:
+            return response
+        return None
 
+    #
+    # Utility methods
+    #
+    def get_short_form_string(self):
+        result = ""
+        for opt in self.options:
+            if opt.valueRequired is InputOption.OPTION_NONE:
+                result = result + opt.shortForm
+            else:
+                result = result + opt.shortForm + ":"
 
-	def getLongFormList(self):
-		result = []
-		for opt in self.options:
-			if opt.valueRequired is CliApplication.VALUE_NONE:
-				result.append(opt.longForm)
-			else:
-				result.append(opt.longForm + "=")
-		return result
+        return result
 
+    def get_long_form_string(self):
+        result = []
+        for opt in self.options:
+            if opt.valueRequired is InputOption.OPTION_NONE:
+                result.append(opt.longForm)
+            else:
+                result.append(opt.longForm + "=")
+        return result
 
-	def getOptionCouples(self):
-		result = []
-		for opt in self.options:
-			result.append(["-" + opt.shortForm, "--" + opt.longForm])
-		return result
+    def get_option_couples(self):
+        result = []
+        for opt in self.options:
+            result.append(["-" + opt.shortForm, "--" + opt.longForm])
+        return result
 
+    def get_option_by_name(self, name):
+        for option in self.options:
+            if name in ["-" + option.shortForm, "--" + option.longForm]:
+                return self.options.index(option)
+        raise Exception("Option " + name + " was not found")
 
-	def getOptionByName(self, name):
-		for option in self.options:
-			if name in ["-" + option.shortForm, "--" + option.longForm]:
-				return self.options.index(option)
-		raise Exception("Option " + name + " was not found")
+    def assert_valid_value_for_option(self, value_required):
+        if value_required not in [InputOption.OPTION_NONE, InputOption.OPTION_OPTIONAL, InputOption.OPTION_REQUIRED]:
+            raise ValueError("Wrong value provided. Should be one of OPTION_REQUIRED, OPTION_OPTIONAL, OPTION_NONE")
 
-
-	def assertValidValue(self, valueRequired):
-		if valueRequired not in [CliApplication.VALUE_NONE, CliApplication.VALUE_OPTIONAL, CliApplication.VALUE_REQUIRED]:
-			raise ValueError("Wrong value provided. Should be one of VALUE_REQUIRED, VALUE_OPTIONAL, VALUE_NONE")
-
-
-
+    def assert_valid_value_for_argument(self, value_required):
+        if value_required not in [InputArgument.ARGUMENT_OPTIONAL, InputArgument.ARGUMENT_REQUIRED]:
+            raise ValueError("Wrong value provided. Should be one of ARGUMENT_REQUIRED, ARGUMENT_OPTIONAL")
