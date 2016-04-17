@@ -7,7 +7,7 @@ import fnmatch
 ###
 # List files within folder tree (generator)
 #
-def walkThroughFiles(topdir, folder_filter="", file_filter=""):
+def walk_through_files(topdir, folder_filter="", file_filter=""):
     for dirpath, _, filenames in os.walk(topdir):
         if folder_filter in dirpath:
             pass
@@ -21,14 +21,14 @@ def walkThroughFiles(topdir, folder_filter="", file_filter=""):
                     yield os.path.join(dirpath, fname)
 
 
-def walkThrough(topdir):
+def walk_through(topdir):
     for dirpath, subdirs, files in os.walk(topdir):
         pass
 
 ###
 # List child folders of top directory (generator)
 #
-def walkThroughFolders(topdir):
+def walk_through_folders(topdir):
     for dirpath, _, _ in os.walk(topdir):
         yield dirpath
 
@@ -36,12 +36,12 @@ def walkThroughFolders(topdir):
 ###
 # Returns the size of a folder's content. Returns 0 if the argument is not a folder
 #
-def folderSize(topdir):
+def folder_size(topdir):
     if os.path.isdir(topdir) is False:
         return 0
     else:
         total_size = 0
-        for filename in walkThroughFiles(topdir):
+        for filename in walk_through_files(topdir):
             total_size += os.path.getsize(filename)
         return total_size
 
@@ -49,7 +49,7 @@ def folderSize(topdir):
 ###
 #
 #
-def compareFiles(left, right):
+def compare_files(left, right):
     if not os.path.isfile(left):
         raise FileNotFoundError(str(left) + ": No such file or directory")
     if not os.path.isfile(right):
@@ -68,12 +68,12 @@ def compareFiles(left, right):
         return -1
 
 
-def getAbsolutePath(relativePath):
+def get_absolute_path(relativePath):
     return os.path.abspath(relativePath)
 
 
 def rm(filePath):
-    absPath = getAbsolutePath(filePath)
+    absPath = get_absolute_path(filePath)
     if os.path.isfile(absPath):
         if os.access(absPath, os.W_OK):
             os.remove(absPath)
@@ -81,42 +81,41 @@ def rm(filePath):
             raise PermissionError("Permission denied")
 
 
-def replaceInFile(filePath, pattern, replaceByStr, caseSensitive=True):
+def replace_in_file(file_path, pattern, replace_by_string, case_sensitive=True):
     import re
-    from misc import if_else
+    from pyATK.utils.misc import if_else
     output = ""
-    absPath = getAbsolutePath(filePath)
-    if os.path.isfile(absPath):
-        file = open(absPath, 'r')
+    abs_path = get_absolute_path(file_path)
+    if os.path.isfile(abs_path):
+        file = open(abs_path, 'r')
     else:
-        raise IOError(absPath + " is not a valid file")
+        raise IOError(abs_path + " is not a valid file")
 
     for line in file:
         print("reading line " + line)
-        output = output + re.sub(pattern, replaceByStr, line, if_else(caseSensitive, None, re.IGNORECASE)) + os.linesep
+        output = output + re.sub(pattern, replace_by_string, line, if_else(case_sensitive, None, re.IGNORECASE)) + os.linesep
 
     file.close()
-    rm(absPath)
-    file = open(absPath, 'w')
+    rm(abs_path)
+    file = open(abs_path, 'w')
     if file:
         file.write(output)
     file.close()
 
 
-
-def readFileContent(path, removeEmptyLines=False, _encoding="utf-8"):
-    absPath = getAbsolutePath(path)
-    file = open(absPath, mode="r", encoding=_encoding)
+def read_file_content(path, remove_empty_lines=False, _encoding="utf-8"):
+    abs_path = get_absolute_path(path)
+    file = open(abs_path, mode="r", encoding=_encoding)
     if file:
         content = ""
         for line in file:
-            if removeEmptyLines is True:
+            if remove_empty_lines is True:
                 if line:
-                    content = content + line
+                    content += line
             else:
-                content = content + line
+                content +=  line
     else:
-        raise FileNotFoundError(absPath + "No such file or directory")
+        raise FileNotFoundError(abs_path + "No such file or directory")
     return content
 
 

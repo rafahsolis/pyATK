@@ -117,11 +117,8 @@ class CliApplication:
             return True
         return False
 
-    # @TODO : Add retry flag
-    def choice(self, question, choices={}, message=None):
+    def choice(self, question, choices={}, message="Please select your choice"):
         keys = []
-        if message is None:
-            message = "Please select your choice"
         for key, choice in choices:
             print("[" + str(key) + "] " + str(choice))
             keys.append(str(key))
