@@ -41,6 +41,35 @@ def same_elements(left, right):
         return True
     return False
 
+
+def without(container, element):
+    """
+        Returns a version of the container that does not contain
+        the specified element(s)
+    """
+    pass
+
+
+def union():
+    pass
+
+
+def intersect():
+    pass
+
+
+def difference():
+    pass
+
+
+def index_of(element, lst):
+    pass
+
+
+def last_index_of(element, lst):
+    pass
+
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod(verbose=True)
