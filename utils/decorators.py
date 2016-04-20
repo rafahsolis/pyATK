@@ -2,6 +2,7 @@ import sys
 import time
 from contextlib import ContextDecorator
 
+
 def static(**kwargs):
     def wrapper(function):
         def probeFunc(frame, event, arg):

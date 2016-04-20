@@ -1,22 +1,37 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
-                
-def is_ascii(data):
-    try:
-        data.decode('ASCII')
-    except UnicodeDecodeError:
-        return False
-    else:
-        return True
+UTF_8_ENCODING = "utf-8"
+ISO_8895_1_ENCODING = "iso-8895-1"
+WINDOWS_1252_ENCODING = "windows-1252"
+MAC_ROMAN_ENCODING = "macroman"
+ASCII_ENCODING = "us-ascii"
+
+encodings = (UTF_8_ENCODING, ISO_8895_1_ENCODING, WINDOWS_1252_ENCODING, MAC_ROMAN_ENCODING, ASCII_ENCODING)
 
 
-def is_utf8(data):
-    try:
-        data.decode('UTF-8')
-    except UnicodeDecodeError:
-        return False
-    else:
-        return True
+def get_encoding(filename):
+    for encoding in encodings:
+        try:
+            file = open(filename, 'rb')
+            payload = file.read()
+            payload.decode(encoding)
+            return encoding
+
+        except FileNotFoundError:
+            raise FileNotFoundError("file " + filename + " is not found.")
+        except:
+            if encoding == encodings[-1]:
+                return None
+            continue
+
+
+def is_ascii(filename):
+    return get_encoding(filename) == "us-ascii"
+
+
+def is_utf8(filename):
+    return get_encoding(filename) == "utf-8"
 
     
 if __name__ == "__main__":

@@ -63,11 +63,21 @@ def difference():
 
 
 def index_of(element, lst):
-    pass
+    index = -1
+    for item in lst:
+        index += 1
+        if item == element:
+            return index
+    return -1
 
 
 def last_index_of(element, lst):
-    pass
+    index = -1
+    while index < len(lst):
+        index += 1
+        if element == lst[len(lst) - index]:
+            return len(lst) - index
+    return -1
 
 
 if __name__ == "__main__":

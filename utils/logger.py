@@ -1,31 +1,31 @@
 import logging
 import os
 
+
 class Logger:
     CRITICAL = logging.CRITICAL
-    ERROR	 = logging.ERROR
-    WARNING  = logging.WARNING
-    INFO     = logging.INFO
-    DEBUG    = logging.DEBUG
-    NOTSET   = logging.NOTSET
+    ERROR = logging.ERROR
+    WARNING = logging.WARNING
+    INFO = logging.INFO
+    DEBUG = logging.DEBUG
+    NOTSET = logging.NOTSET
 
-    def __init__(self, fileName, overwrite=False):
-        FORMAT = "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s"
-        DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
-        FILE_MODE = "a"
+    def __init__(self, filename, overwrite=False):
+        _format = "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s"
+        _date_format = "%Y-%m-%d %H:%M:%S"
+        _file_mode = "a"
         if overwrite is True:
-            FILE_MODE = "w"
+            _file_mode = "w"
 
-        logging.basicConfig(filename=fileName,level=logging.NOTSET,format= FORMAT,datefmt=DATE_FORMAT,
-                            filemode=FILE_MODE)
-        self.internalLogger = logging.getLogger(fileName.split(os.pathsep)[-1])
-        print("GetLogger with " + fileName.split(os.pathsep)[-1])
+        logging.basicConfig(filename=filename, level=logging.NOTSET, format= _format, datefmt=_date_format,
+                            filemode=_file_mode)
+        self.internalLogger = logging.getLogger(filename.split(os.pathsep)[-1])
 
-    def setFormat(self, newFormat):
-        logging.basicConfig(format=newFormat)
+    def set_format(self, new_format):
+        logging.basicConfig(format=new_format)
 
-    def setDateFormat(self, newDateFormat):
-        logging.basicConfig(datefmt=newDateFormat)
+    def set_date_format(self, new_date_format):
+        logging.basicConfig(datefmt=new_date_format)
 
     def log(self, msg, level=NOTSET):
         if level == Logger.CRITICAL:
@@ -52,7 +52,7 @@ class Logger:
         self.log(msg, Logger.INFO)
 
     def debug(self, msg):
-        self.log(Logger.DEBUG)
+        self.log(msg, Logger.DEBUG)
 
 
 
