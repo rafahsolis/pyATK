@@ -3,7 +3,7 @@
 from time import strptime
 
 
-class Time:
+class LocalTime:
     def __init__(self, hours=0, minutes=0, seconds=0):
         self.seconds = seconds + 60 * minutes + 3600 * hours
 
@@ -41,14 +41,14 @@ class Time:
 
     def __add__(self, other):
         seconds = self.seconds + other.seconds
-        return Time(seconds=seconds)
+        return LocalTime(seconds=seconds)
 
     def __sub__(self, other):
         seconds = self.seconds - other.seconds
-        return Time(seconds=seconds)
+        return LocalTime(seconds=seconds)
 
 
 if __name__ == "__main__":
     import doctest
-    doctest.testmod(verbose=True, extraglobs={'t': Time()})
+    doctest.testmod(verbose=True, extraglobs={'t': LocalTime()})
 

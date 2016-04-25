@@ -8,9 +8,9 @@ class Stack:
     def __init__(self):
         self.internal_list = list()
 
-    def isEmpty(self):
+    def is_empty(self):
         """
-        >>> s.isEmpty()
+        >>> s.is_empty()
         True
         """
         return len(self.internal_list) == 0
@@ -35,7 +35,7 @@ class Stack:
         """
         return self.internal_list[-1]
 
-    def print_content(self):
+    def __print_content(self):
         print("+---------+")
         for i in range(len(self.internal_list)):
             print("   " + str(self.internal_list[len(self.internal_list) - 1 - i]))

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 
@@ -16,13 +17,13 @@ def flatten(lst):
     return l
 
 
-def uniq(array):
+def unique(array):
     """
-        >>> uniq([1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9])
+        >>> unique([1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9])
         [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        >>> uniq((1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9))
+        >>> unique((1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9))
         [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        >>> uniq(['a', 'z', 'a', 'b', 'a', 'z', 'b'])
+        >>> unique(['a', 'z', 'a', 'b', 'a', 'z', 'b'])
         ['a', 'z', 'b']
     """
     return list(set(array))
@@ -42,12 +43,12 @@ def same_elements(left, right):
     return False
 
 
-def without(container, element):
-    """
-        Returns a version of the container that does not contain
-        the specified element(s)
-    """
-    pass
+def without(lst, element):
+    new_lst = []
+    for item in lst:
+        if item != element:
+            new_lst.append(item)
+    return new_lst
 
 
 def union():

@@ -93,19 +93,27 @@ def capitalize(s):
     return upper(s[0]) + s[1:]
 
 
+def capitalize_words(s):
+    """
+    >>> capitalize_words("hello world")
+    'Hello World'
+    """
+    return " ".join([capitalize(s) for s in s.split(" ")])
+
+
 def remove_accents(text):
-    text = unicode(text).encode('utf-8')
-    for plain, funny_set in (('a','áàâãäå\u0101'), ('e','éèêẽë'), ('i',"íìîĩï"), ('o','óòôõöø'),
-                             ('u',"úùûũü"), ('A','ÁÀÂÃÄÅ'), ('E','ÉÈÊẼË'), ('I',"ÍÌÎĨÏ"),
-                             ('O','ÓÒÔÕÖØ'), ('U',"ÚÙÛŨÜ"), ('n',"ñ"), ('c',"ç"), ('N',"Ñ"),
-                             ('C',"Ç"), ('d',"Þ"), ('ss',"ß"), ('ae',"æ"), ('oe','œ')):
+    text = text.encode('utf-8')
+    for plain, funny_set in (('a', 'áàâãäå\u0101'), ('e', 'éèêẽë'), ('i', "íìîĩï"), ('o', 'óòôõöø'),
+                             ('u', "úùûũü"), ('A', 'ÁÀÂÃÄÅ'), ('E', 'ÉÈÊẼË'), ('I', "ÍÌÎĨÏ"),
+                             ('O', 'ÓÒÔÕÖØ'), ('U', "ÚÙÛŨÜ"), ('n', "ñ"), ('c', "ç"), ('N', "Ñ"),
+                             ('C', "Ç"), ('d', "Þ"), ('ss', "ß"), ('ae', "æ"), ('oe', 'œ')):
         for funny in funny_set:
             text = text.replace(funny, plain)
     return text
 
 
 def deregexify(s):
-    pass
+    return s.decode('string_escape')
  
 
 def regexify(s):
@@ -136,24 +144,24 @@ def ordinal(n):
 
 def right_of(string, separator=None):
     if separator is None:
-        return None
+        return string
     else:
         if separator in string:
             return string.split(separator, 1)[1]
         else:
-            return None
+            return string
 
 
 def left_of(string, separator=None):
     if separator is None:
-        return None
+        return string
     else:
         if separator in string:
             return string.split(separator, 1)[0]
         else:
-            return None
+            return string
 
 
 if __name__ == "__main__":
     import doctest
-    doctest.testmod(verbose=True)
+    doctest.testmod(verbose=False)

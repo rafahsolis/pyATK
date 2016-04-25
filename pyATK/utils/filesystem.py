@@ -7,42 +7,37 @@ import fnmatch
 ###
 # List files within folder tree (generator)
 #
-def walk_through_files(topdir, folder_filter="", file_filter=""):
-    for dirpath, _, filenames in os.walk(topdir):
-        if folder_filter in dirpath:
+def walk_through_files(top_dir, folder_filter="", file_filter=""):
+    for dir_path, _, file_names in os.walk(top_dir):
+        if folder_filter in dir_path:
             pass
         else:
             continue
-        for fname in filenames:
+        for fname in file_names:
             if file_filter == "":
-                yield os.path.join(dirpath, fname)
+                yield os.path.join(dir_path, fname)
             else:
                 if fnmatch.fnmatch(fname, file_filter) is True:
-                    yield os.path.join(dirpath, fname)
-
-
-def walk_through(topdir):
-    for dirpath, subdirs, files in os.walk(topdir):
-        pass
+                    yield os.path.join(dir_path, fname)
 
 
 ###
 # List child folders of top directory (generator)
 #
-def walk_through_folders(topdir):
-    for dirpath, _, _ in os.walk(topdir):
-        yield dirpath
+def walk_through_folders(top_dir):
+    for dir_path, _, _ in os.walk(top_dir):
+        yield dir_path
 
 
 ###
 # Returns the size of a folder's content. Returns 0 if the argument is not a folder
 #
-def folder_size(topdir):
-    if os.path.isdir(topdir) is False:
+def folder_size(top_dir):
+    if os.path.isdir(top_dir) is False:
         return 0
     else:
         total_size = 0
-        for filename in walk_through_files(topdir):
+        for filename in walk_through_files(top_dir):
             total_size += os.path.getsize(filename)
         return total_size
 
@@ -56,7 +51,8 @@ def mkdir(folder_name):
 
 
 def touch(file_name):
-    pass
+    f = open(file_name, 'w')
+    f.close()
 
 
 def rm(file_path):

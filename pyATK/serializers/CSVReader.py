@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import csv
-import utils.filesystem as fs
-import utils.encoding as en
+import pyATK.utils.filesystem as fs
+import pyATK.utils.encoding as en
 
 
 class CSVReader:

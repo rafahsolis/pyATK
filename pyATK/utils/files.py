@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from .filesystem import get_absolute_path, rm
+from pyATK.utils.filesystem import get_absolute_path, rm
 
 
 def compare_files(left, right):

@@ -1,21 +1,6 @@
-import sys
 import time
 from contextlib import ContextDecorator
 
-
-def static(**kwargs):
-    def wrapper(function):
-        def probeFunc(frame, event, arg):
-            if event == 'call':
-                frame.f_locals.update(kwargs)
-                frame.f_globals.update(kwargs)
-            elif event == 'return':
-                for key in kwargs:
-                    kwargs[key] = frame.f_locals[key]
-                sys.settrace(None)
-        return function
-    return wrapper
-    
 
 def not_implemented(func):
     raise NotImplementedError("Function " + func.__name__ + " is not implemented!")
@@ -46,7 +31,7 @@ def posix_only(func):
 def timeout(seconds=10, msg="Function timed out"):
     import signal
 
-    class TimeoutError(Exception):
+    class TimeoutException(Exception):
         def __init__(self, message):
             self.message = message
 
@@ -54,7 +39,7 @@ def timeout(seconds=10, msg="Function timed out"):
             return self.message
 
     def callback(signum, frame):
-        raise TimeoutError(msg)
+        raise TimeoutException(msg)
 
     def wrapper(func, *args, **kwargs):
         signal.signal(signal.SIGALRM, callback)
@@ -62,7 +47,7 @@ def timeout(seconds=10, msg="Function timed out"):
         result = None
         try:
             result = func(*args, **kwargs)
-        except TimeoutError as e:
+        except TimeoutException as e:
             print(e)
             
         finally:
@@ -72,7 +57,7 @@ def timeout(seconds=10, msg="Function timed out"):
 
 
 class timeit(ContextDecorator):
-    def __init__(self, *args):
+    def __init__(self):
         self.start = None
         self.end = None
         
@@ -89,8 +74,8 @@ def retry(nb=3, delay=1):
         def wrapper(*args, **kwargs):
             for i in range(0, nb):
                 print("Try " + str(i+1) + " out of " + str(nb))
-                returnValue = f(*args, **kwargs)
-                if returnValue is True:
+                return_value = f(*args, **kwargs)
+                if return_value is True:
                     print("Success!")
                     return True
                 time.sleep(delay)
