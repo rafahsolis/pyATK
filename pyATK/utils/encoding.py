@@ -26,6 +26,18 @@ def get_encoding(filename):
             continue
 
 
+def get_data_encoding(payload):
+    for encoding in encodings:
+        print("encoding is: " + encoding)
+        try:
+            payload.decode(encoding)
+            return encoding
+        except:
+            if encoding == encodings[-1]:
+                return ASCII_ENCODING
+            continue
+
+
 def is_ascii(filename):
     return get_encoding(filename) == "us-ascii"
 

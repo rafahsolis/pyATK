@@ -20,6 +20,11 @@ def sha256_checksum(data):
     return sha.hexdigest()
 
 
+def sha512_checksum(data):
+    sha = hashlib.sha512()
+    sha.update(data)
+    return sha.hex
+
 ###
 # Returns CRC32 checksum of data
 #

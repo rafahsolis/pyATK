@@ -46,17 +46,17 @@ def replace_in_file(file_path, pattern, replace_by_string, case_sensitive=True):
     file.close()
 
 
-def read_file_content(path, remove_empty_lines=False, _encoding="utf-8"):
+def read_file_content(path, remove_empty_lines=False, encoding="utf-8"):
     abs_path = get_absolute_path(path)
-    file = open(abs_path, mode="r", encoding=_encoding)
+    file = open(abs_path, mode="r", encoding=encoding)
     if file:
         content = ""
         for line in file:
             if remove_empty_lines is True:
-                if line:
+                if line != "":
                     content += line
             else:
-                content +=  line
+                content += line
     else:
         raise FileNotFoundError(abs_path + "No such file or directory")
     return content
