@@ -8,5 +8,7 @@ python:
 # command to run tests
 script: nosetests
 
+install:
+  - pip install coveralls
 after_success:
   - coveralls
