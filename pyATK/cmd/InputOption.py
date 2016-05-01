@@ -5,6 +5,8 @@ class InputOption:
     OPTION_REQUIRED = 0x0
     OPTION_OPTIONAL = 0x1
     OPTION_NONE = 0x2
+    OFFSET = 35
+    MAX_LENGTH_PER_LINE = 80
 
     def __init__(self, short_form, long_form=None, description=None, value_required=None):
         self.shortForm = short_form
@@ -22,7 +24,16 @@ class InputOption:
         else:
             pass
 
-        ret_string += if_else(self.description is not None, "\t\t" + self.description, "")
+        ret_string = ret_string.ljust(InputOption.OFFSET)
+        if self.description is not None:
+            if len(self.description) > InputOption.MAX_LENGTH_PER_LINE:
+                ret_string += self.description[:InputOption.MAX_LENGTH_PER_LINE] + "\n"
+                ret_string += self.description[InputOption.MAX_LENGTH_PER_LINE:].rjust(InputOption.OFFSET +
+                                                                                       len(self.description) -
+                                                                                       InputOption.MAX_LENGTH_PER_LINE)
+            else:
+                ret_string += self.description
+
         return ret_string
 
     def __repr__(self):
