@@ -7,7 +7,8 @@ class TableHelper:
     def __init__(self, width=80):
         self.width = width
         self.headers = []
-<<<<<<< HEAD
+        self.data_set = []
+        self.column_width = 0
 
     def add_column(self, title):
         self.headers.append(title)
@@ -25,16 +26,6 @@ class TableHelper:
         print("|")
         print("+" + str((self.width) * "-") + "+")
 
-
-if __name__ == "__main__":
-    helper = TableHelper(80)
-    helper.add_column("Name")
-    helper.add_column("Last name")
-
-    helper.add_column("Age")
-    helper.print_header()
-=======
-        self.data_set = []
 
     def add_column(self, title):
         self.headers.append(title)
@@ -67,4 +58,3 @@ if __name__ == "__main__":
     def print_line_separator(self):
         print("+" + str(self.width * "-") + "+")
 
->>>>>>> c7d233a6e175ba9d209de5e7a909843c533e7e6f
