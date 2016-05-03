@@ -3,7 +3,7 @@
 
 
 class ProgressBar:
-    def __init__(self, bar_width=80, filled_char="█", empty_char=" "):
+    def __init__(self, bar_width=80, filled_char="=", empty_char="-"):
         self.bar_width = bar_width
         self.filled_char = filled_char
         self.empty_char = empty_char
@@ -22,7 +22,7 @@ class ProgressBar:
 
     def render(self):
         normalized_progress = (self.progress * self.bar_width) // 100
-        print("\r" + "".join(normalized_progress * [self.filled_char]) +
+        print("\r|" + "".join((normalized_progress-1) * [self.filled_char]) + ">" +
               "".join((self.bar_width - normalized_progress) * [self.empty_char]) + "| " +
               str(self.progress) + "%", end="")
 

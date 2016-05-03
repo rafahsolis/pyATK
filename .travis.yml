@@ -7,3 +7,8 @@ python:
 # command to install dependencies
 # command to run tests
 script: nosetests
+
+install:
+  - pip install coveralls
+after_success:
+  - coveralls
