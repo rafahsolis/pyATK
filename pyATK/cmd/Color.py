@@ -34,13 +34,6 @@ class Color:
 
     @classmethod
     def colored(cls, s, foreground_color=FG_DEFAULT, modifiers=NONE):
-        strToPrint = foreground_color + s + Color.FG_DEFAULT
-        print(strToPrint)
+        str_to_print = foreground_color + s + Color.FG_DEFAULT
+        print(str_to_print)
 
-
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod(verbose=True)
-    Color.colored("salut", Color.FG_RED)

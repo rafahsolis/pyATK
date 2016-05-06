@@ -7,6 +7,14 @@ import re
 class StringHelper:
     @classmethod
     def right_of(cls, string, separator=None):
+        """
+        >>> StringHelper.right_of('Hello World', ' ')
+        'World'
+        >>> StringHelper.right_of('Hello World', 'Beautiful')
+        'Hello World'
+        >>> StringHelper.right_of('Hello World')
+        'Hello World'
+        """
         if separator is None:
             return string
         else:
@@ -17,6 +25,14 @@ class StringHelper:
 
     @classmethod
     def left_of(cls, string, separator=None):
+        """
+        >>> StringHelper.left_of('Hello World', ' ')
+        'Hello'
+        >>> StringHelper.left_of('Hello World', 'Beautiful')
+        'Hello World'
+        >>> StringHelper.left_of('Hello World')
+        'Hello World'
+        """
         if separator is None:
             return string
         else:
@@ -30,14 +46,16 @@ class StringHelper:
         """
         Formats an ordinal.
         Doesn't handle negative numbers.
+        >>> StringHelper.ordinal(-1)
+        None
         >>> StringHelper.ordinal(1)
         '1st'
         >>> StringHelper.ordinal(0)
         '0th'
-        >>> [StringHelper.ordinal(x) for x in [2, 3, 4, 5, 10, 11, 12, 13, 14]]
-        ['2nd', '3rd', '4th', '5th', '10th', '11th', '12th', '13th', '14th']
-        >>> [StringHelper.ordinal(x) for x in [91, 92, 93, 94, 99, 100, 101, 102]]
-        ['91st', '92nd', '93rd', '94th', '99th', '100th', '101st', '102nd']
+        >>> StringHelper.ordinal(13)
+        '13th'
+        >>> [StringHelper.ordinal(101)
+        '101st'
         >>> [StringHelper.ordinal(x) for x in [111, 112, 113, 114, 115]]
         ['111th', '112th', '113th', '114th', '115th']
         """
@@ -49,16 +67,30 @@ class StringHelper:
 
     @classmethod
     def upper(cls, c):
+        """
+        >>> StringHelper.upper('a')
+        'A'
+        """
         if ord(c) in range(97, 122):
             return chr(ord(c) - 32)
 
     @classmethod
     def lower(cls, c):
+        """
+        >>> StringHelper.lower('A')
+        'a'
+        """
         if ord(c) in range(65, 90):
             return chr(ord(c) + 32)
 
     @classmethod
     def capitalize(cls, s):
+        """
+        >>> StringHelper.Capitalize('hello there')
+        'Hello there'
+        >>> StringHelper.Capitalize('Hello there')
+        'Hello there'
+        """
         return cls.upper(s[0]) + s[1:]
 
     @classmethod
@@ -96,6 +128,10 @@ class StringHelper:
         >>> StringHelper.levenshtein("Cat", "cat")
         1
         >>> StringHelper.levenshtein("Cat", "Dog")
+        3
+        >>> StringHelper.levenshtein("Cat", "Dodge")
+        5
+        >>> StringHelper.levenshtein("Cat", "")
         3
         """
         if len(s1) < len(s2):

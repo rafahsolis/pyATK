@@ -105,6 +105,3 @@ def read_file_content(path, remove_empty_lines=False, encoding="utf-8"):
         raise FileNotFoundError(abs_path + "No such file or directory")
     return content
 
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod(verbose=True)

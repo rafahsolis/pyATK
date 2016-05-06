@@ -19,7 +19,7 @@ def flatten(lst):
 
 def unique(array):
     """
-        >>> unique([1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9])
+        >>> unique([1, 2, 1, 2, 5, 3, 3, 4, 4, 1, 1, 1, 4, 5, 6, 7, 7, 6, 8, 7, 8, 9])
         [1, 2, 3, 4, 5, 6, 7, 8, 9]
         >>> unique((1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9))
         [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -44,6 +44,12 @@ def same_elements(left, right):
 
 
 def without(lst, element):
+    """
+    >>> without([1, 2, 3, 4, 5], 5)
+    [1, 2, 3, 4]
+    >>> without([1, 2, 3], 2)
+    [1, 3]
+    """
     new_lst = []
     for item in lst:
         if item != element:
@@ -64,6 +70,12 @@ def difference():
 
 
 def index_of(element, lst):
+    """
+    >>> index_of('e', "Hello There")
+    1
+    >>> index_of(1, [0, 2, 3])
+    -1
+    """
     index = -1
     for item in lst:
         index += 1
@@ -73,14 +85,16 @@ def index_of(element, lst):
 
 
 def last_index_of(element, lst):
+    """
+    >>> last_index_of(1, [1, 2, 3, 1, 5, 6, 1])
+    6
+    >>> last_index_of(10, [1, 2, 3, 1, 5, 6, 1])
+    -1
+    """
     index = -1
     while index < len(lst):
         index += 1
-        if element == lst[len(lst) - index]:
-            return len(lst) - index
+        if element == lst[len(lst) - index - 1]:
+            return len(lst) - index - 1
     return -1
 
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod(verbose=True)

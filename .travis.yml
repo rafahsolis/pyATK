@@ -6,9 +6,10 @@ python:
   - "nightly" # currently points to 3.6-dev
 # command to install dependencies
 # command to run tests
-script: nosetests
+script: py.test --doctest-modules pyATK/ --cov=pyATK/
 
 install:
+  - pip install pytest
   - pip install coveralls
 after_success:
   - coveralls
