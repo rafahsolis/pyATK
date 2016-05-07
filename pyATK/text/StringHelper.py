@@ -47,14 +47,14 @@ class StringHelper:
         Formats an ordinal.
         Doesn't handle negative numbers.
         >>> StringHelper.ordinal(-1)
-        None
+
         >>> StringHelper.ordinal(1)
         '1st'
         >>> StringHelper.ordinal(0)
         '0th'
         >>> StringHelper.ordinal(13)
         '13th'
-        >>> [StringHelper.ordinal(101)
+        >>> StringHelper.ordinal(101)
         '101st'
         >>> [StringHelper.ordinal(x) for x in [111, 112, 113, 114, 115]]
         ['111th', '112th', '113th', '114th', '115th']
@@ -70,25 +70,35 @@ class StringHelper:
         """
         >>> StringHelper.upper('a')
         'A'
+        >>> StringHelper.upper('A')
+        'A'
+        >>> StringHelper.upper('1')
+        '1'
         """
         if ord(c) in range(97, 122):
             return chr(ord(c) - 32)
+        return c
 
     @classmethod
     def lower(cls, c):
         """
         >>> StringHelper.lower('A')
         'a'
+        >>> StringHelper.lower('a')
+        'a'
+        >>> StringHelper.lower('1')
+        '1'
         """
         if ord(c) in range(65, 90):
             return chr(ord(c) + 32)
+        return c
 
     @classmethod
     def capitalize(cls, s):
         """
-        >>> StringHelper.Capitalize('hello there')
+        >>> StringHelper.capitalize('hello there')
         'Hello there'
-        >>> StringHelper.Capitalize('Hello there')
+        >>> StringHelper.capitalize('Hello there')
         'Hello there'
         """
         return cls.upper(s[0]) + s[1:]
@@ -103,7 +113,10 @@ class StringHelper:
 
     @classmethod
     def remove_accents(cls, text):
-        text = text.encode('utf-8')
+        """
+        >>> StringHelper.remove_accents("Je suis allé à l'école")
+        "Je suis alle a l'ecole"
+        """
         for plain, funny_set in (('a', 'áàâãäå\u0101'), ('e', 'éèêẽë'), ('i', "íìîĩï"), ('o', 'óòôõöø'),
                                  ('u', "úùûũü"), ('A', 'ÁÀÂÃÄÅ'), ('E', 'ÉÈÊẼË'), ('I', "ÍÌÎĨÏ"),
                                  ('O', 'ÓÒÔÕÖØ'), ('U', "ÚÙÛŨÜ"), ('n', "ñ"), ('c', "ç"), ('N', "Ñ"),
@@ -111,14 +124,6 @@ class StringHelper:
             for funny in funny_set:
                 text = text.replace(funny, plain)
         return text
-
-    @classmethod
-    def deregexify(cls, s):
-        return s.decode('string_escape')
-
-    @classmethod
-    def regexify(cls, s):
-        return re.escape(s)
 
     @classmethod
     def levenshtein(cls, s1, s2):

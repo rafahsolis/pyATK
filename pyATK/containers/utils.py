@@ -24,9 +24,9 @@ def unique(array):
         >>> unique((1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9))
         [1, 2, 3, 4, 5, 6, 7, 8, 9]
         >>> unique(['a', 'z', 'a', 'b', 'a', 'z', 'b'])
-        ['a', 'z', 'b']
+        ['a', 'b', 'z']
     """
-    return list(set(array))
+    return sorted(list(set(array)))
 
 
 def same_elements(left, right):
@@ -55,18 +55,6 @@ def without(lst, element):
         if item != element:
             new_lst.append(item)
     return new_lst
-
-
-def union():
-    pass
-
-
-def intersect():
-    pass
-
-
-def difference():
-    pass
 
 
 def index_of(element, lst):

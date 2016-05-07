@@ -12,12 +12,8 @@ encodings = (UTF_8_ENCODING, ISO_8895_1_ENCODING, WINDOWS_1252_ENCODING, MAC_ROM
 
 def get_encoding(filename):
     """
-    >>> f = open('tmp.txt', 'w', encoding='ascii')
-    >>> f.close()
     >>> get_encoding(__file__)
     'utf-8'
-    >>> get_encoding('tmp.txt')
-    'us-ascii'
     """
     for encoding in encodings:
         try:
@@ -53,9 +49,15 @@ def get_data_encoding(payload):
 def is_ascii(filename):
     """
     >>> is_ascii(__file__)
-    False
+    True
     """
-    return get_encoding(filename) == "us-ascii"
+    try:
+        data = open(filename, 'r').read()
+        data.encode().decode('ASCII')
+    except UnicodeDecodeError:
+        return False
+    else:
+        return True
 
 
 def is_utf8(filename):
@@ -63,6 +65,12 @@ def is_utf8(filename):
     >>> is_utf8(__file__)
     True
     """
-    return get_encoding(filename) == "utf-8"
+    try:
+        data = open(filename, 'r').read()
+        data.encode().decode('UTF-8')
+    except UnicodeDecodeError:
+        return False
+    else:
+        return True
 
 

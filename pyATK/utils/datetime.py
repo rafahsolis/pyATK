@@ -4,6 +4,21 @@ from time import strptime
 
 
 class LocalTime:
+    """
+    >>> t = LocalTime()
+    >>> t.human_format()
+    '0s'
+    >>> t2 = LocalTime.from_string("2:45:56")
+    >>> t2 = t2 + t
+    >>> t2.human_format()
+    '2h45m56s'
+    >>> t2 = t2 - t
+    >>> t2.human_format()
+    '2h45m56s'
+    >>> t3 = LocalTime(seconds=34214000)
+    >>> t3.human_format()
+    '1yr1mth1d'
+    """
     def __init__(self, hours=0, minutes=0, seconds=0):
         self.seconds = seconds + 60 * minutes + 3600 * hours
 
@@ -47,8 +62,4 @@ class LocalTime:
         seconds = self.seconds - other.seconds
         return LocalTime(seconds=seconds)
 
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod(verbose=True, extraglobs={'t': LocalTime()})
 
