@@ -9,7 +9,7 @@ python:
 script: py.test --doctest-modules pyATK/
 
 install:
-  - pip install pytest
+  - pip install pytest pytest-cov
   - pip install coveralls
 after_success:
   - coveralls
