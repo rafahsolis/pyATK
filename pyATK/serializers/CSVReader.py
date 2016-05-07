@@ -7,7 +7,20 @@ import pyATK.filesystem.Utils as fs
 
 
 class CSVReader:
-    def __init__(self, file_path, first_row_as_header=False, ignore_emtpy_lines=True, separator=';'):
+    """
+    >>> f = open('tst.txt', 'w')
+    >>> chars = f.write("header1,header2,header3\\n")
+    >>> chars = f.write("field1,field2,field3")
+    >>> f.close()
+    >>> reader = CSVReader('tst.txt')
+    >>> reader.load()
+    [{0: 'field1', 1: 'field2', 2: 'field3'}]
+    >>> reader = CSVReader('tst.txt', True)
+    >>> data = reader.load()
+    >>> import os
+    >>> os.remove('tst.txt')
+    """
+    def __init__(self, file_path, first_row_as_header=False, ignore_emtpy_lines=True, separator=','):
         self.file_path = fs.get_absolute_path(file_path)
         self.first_row_as_header = first_row_as_header
         self.ignore_emtpy_lines = ignore_emtpy_lines
@@ -18,6 +31,7 @@ class CSVReader:
         data_dictionary = {}
         for header in headers:
             data_dictionary[header] = data[index]
+            index += 1
         return data_dictionary
 
     def load(self):
@@ -25,7 +39,6 @@ class CSVReader:
         row_count = 0
         encoding = en.get_encoding(self.file_path)
         if encoding is None:
-            print("Unable to detect file encoding. Using ASCII")
             encoding = 'us-ascii'
         file = open(self.file_path, encoding=encoding)
         reader = csv.reader(file, delimiter=self.separator)

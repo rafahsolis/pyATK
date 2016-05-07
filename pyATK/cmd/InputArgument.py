@@ -1,5 +1,15 @@
 
 class InputArgument:
+    """
+    >>> argument = InputArgument('arg-name', 'the description', InputArgument.ARGUMENT_REQUIRED)
+    >>> argument.__str__()
+    '<arg-name>'
+    >>> argument.__repr__()
+    '<arg-name>'
+    >>> argument = InputArgument('arg-name', 'desc', InputArgument.ARGUMENT_OPTIONAL)
+    >>> argument.__str__()
+    '[arg-name]'
+    """
     ARGUMENT_REQUIRED = 0x0
     ARGUMENT_OPTIONAL = 0x1
 

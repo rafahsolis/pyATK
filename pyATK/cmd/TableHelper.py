@@ -1,30 +1,28 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import math
 
 class TableHelper:
+    """
+    >>> helper = TableHelper(79)
+    >>> helper.add_column('first name')
+    >>> helper.add_column('last name')
+    >>> helper.set_data([['my first name', 'my last name'], ['first']])
+    >>> helper.display()
+    +--------------------------------------------------------------------------------+
+    |               first name              |               last name                |
+    +--------------------------------------------------------------------------------+
+    |             my first name             |              my last name              |
+    +--------------------------------------------------------------------------------+
+    |                 first                 |                                        |
+    +--------------------------------------------------------------------------------+
+
+    """
     def __init__(self, width=80):
         self.width = width
         self.headers = []
         self.data_set = []
         self.column_width = 0
-
-    def add_column(self, title):
-        self.headers.append(title)
-
-    def display(self):
-        pass
-
-    def print_header(self):
-        column_width = ((self.width ) / len(self.headers))
-        print(column_width)
-        column_width = int(column_width)
-        print("+" + str((self.width) * "-") + "+")
-        for header in self.headers:
-            print("|" + header.center(column_width), end='')
-        print("|")
-        print("+" + str((self.width) * "-") + "+")
 
 
     def add_column(self, title):

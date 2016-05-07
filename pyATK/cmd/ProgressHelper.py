@@ -3,7 +3,17 @@
 
 
 class ProgressBar:
-    def __init__(self, bar_width=80, filled_char="=", empty_char="-"):
+    """
+    >>> helper = ProgressBar()
+    >>> helper.set_width(80)
+    >>> helper.get_width()
+    80
+    >>> helper.advance(10)
+    \r|=======>                                                                        | 10%
+    >>> helper.advance(90)
+    \r|===============================================================================>| 100%
+    """
+    def __init__(self, bar_width=80, filled_char="=", empty_char=" "):
         self.bar_width = bar_width
         self.filled_char = filled_char
         self.empty_char = empty_char

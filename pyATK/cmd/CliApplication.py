@@ -8,7 +8,45 @@ from pyATK.utils.misc import if_else
 
 
 class CliApplication:
-
+    """
+    >>> app = CliApplication()
+    >>> app.set_name('test app')
+    <pyATK.cmd.CliApplication.CliApplication object at 0x...>
+    >>> app.set_version('1.0')
+    <pyATK.cmd.CliApplication.CliApplication object at 0x...>
+    >>> app.add_argument('arg1', 'some argument', InputArgument.ARGUMENT_REQUIRED)
+    <pyATK.cmd.CliApplication.CliApplication object at 0x...>
+    >>> app.add_argument('arg2', 'some other argument', InputArgument.ARGUMENT_REQUIRED)
+    <pyATK.cmd.CliApplication.CliApplication object at 0x...>
+    >>> app.add_option('i', 'input', 'input option', InputOption.OPTION_REQUIRED)
+    <pyATK.cmd.CliApplication.CliApplication object at 0x...>
+    >>> app.add_option('b', 'b-option', 'option description', InputOption.OPTION_REQUIRED)
+    <pyATK.cmd.CliApplication.CliApplication object at 0x...>
+    >>> app.get_value_for_option('i')
+    >>> app.usage()
+    test app, version : 1.0
+    Usage:
+    test app [OPTIONS] <arg1> <arg2>
+    <BLANKLINE>
+    Options:
+    <BLANKLINE>
+    -h, --help                         Displays this help message
+    -i, --input=<VALUE>                input option
+    -b, --b-option=<VALUE>             option description
+    <BLANKLINE>
+    >>> app.do_run()
+    Traceback (most recent call last):
+    ...
+    NotImplementedError: This method is not implemented!
+    >>> app.get_option_couples()
+    [['-h', '--help'], ['-i', '--input'], ['-b', '--b-option']]
+    >>> app.get_option_by_name('--input')
+    1
+    >>> app.get_long_form_string()
+    ['help', 'input=', 'b-option=']
+    >>> app.get_short_form_string()
+    'hi:b:'
+    """
     STATUS_SUCCESS = 0x0
     STATUS_FAILURE = 0x1
 
@@ -26,9 +64,11 @@ class CliApplication:
 
     def set_name(self, name):
         self.name = name
+        return self
 
     def set_version(self, version):
         self.version = version
+        return self
 
     def add_option(self, short_form, long_form=None, description=None, value_required=InputOption.OPTION_NONE):
         self.assert_valid_value_for_option(value_required)
@@ -58,7 +98,20 @@ class CliApplication:
         print(self.name + ", version : " + self.version)
         print("Usage:")
 
-        print(self.name + if_else(self.expectingOptions == True, " [OPTIONS] ", "") + " ".join(self.arguments) + "\n")
+        arg_string = ""
+        count = 0
+        if len(self.arguments) == 1:
+            arg_string = str(self.arguments[0])
+        else:
+            count = 0
+            for arg in self.arguments:
+                if count != len(self.arguments)-1:
+                    arg_string += str(arg) + " "
+                else:
+                    arg_string += str(arg)
+                count += 1
+
+        print(self.name + if_else(self.expectingOptions is True, " [OPTIONS] ", "") + arg_string + "\n")
 
         print("Options:\n")
 
@@ -106,27 +159,6 @@ class CliApplication:
 
     def do_run(self):
         raise NotImplementedError("This method is not implemented!")
-
-    #
-    # Input methods
-    #
-    def confirm(self, question):
-        print(question + " [Y/n]")
-        response = input()
-        if response.startswith("Y"):
-            return True
-        return False
-
-    def choice(self, question, choices={}, message="Please select your choice"):
-        keys = []
-        for key, choice in choices:
-            print("[" + str(key) + "] " + str(choice))
-            keys.append(str(key))
-        print(message)
-        response = input()
-        if response in keys:
-            return response
-        return None
 
     #
     # Utility methods
