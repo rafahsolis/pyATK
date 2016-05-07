@@ -66,6 +66,8 @@ def folder_size(top_dir):
     5
     >>> folder_size('./not_found_folder')
     0
+    >>> os.remove(os.path.join(path, 'test', 'tmp.txt'))
+    >>> os.removedirs(os.path.join(path, 'test'))
     """
     if os.path.isdir(top_dir) is False:
         return 0
