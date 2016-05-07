@@ -6,7 +6,7 @@ python:
   - "nightly" # currently points to 3.6-dev
 # command to install dependencies
 # command to run tests
-script: py.test --doctest-modules pyATK/
+script: py.test --doctest-modules pyATK/ --cov=pyATK/
 
 install:
   - pip install pytest pytest-cov
