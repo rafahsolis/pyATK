@@ -11,7 +11,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='pyATK',
-    version='1.0.0.dev',
+    version='1.0.0.dev2',
     packages=find_packages(),
     author_email='aliturki.at@gmail.com',
     description='A Python toolbox for everyday tasks',

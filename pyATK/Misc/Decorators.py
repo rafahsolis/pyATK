@@ -2,11 +2,19 @@ import time
 from contextlib import ContextDecorator
 
 
-def not_implemented(func):
+def notImplemented(func):
+    """
+    >>> @notImplemented
+    ... def fn():
+    ...     pass
+    Traceback (most recent call last):
+    ...
+    NotImplementedError: Function fn is not implemented!
+    """
     raise NotImplementedError("Function " + func.__name__ + " is not implemented!")
         
     
-def windows_only(func):
+def windowsOnly(func):
     import os
 
     def wrapper(*args, **kwargs):
@@ -17,7 +25,7 @@ def windows_only(func):
     raise Exception("Not available on " + os.name + " platform")
 
     
-def posix_only(func):
+def posixOnly(func):
     import os
 
     def wrapper(*args, **kwargs):

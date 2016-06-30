@@ -1,4 +1,5 @@
-from pyATK.utils.misc import if_else
+from datetime import datetime
+from pyATK.Misc.Misc import if_else
 
 
 class InputOption:
@@ -24,33 +25,46 @@ class InputOption:
     OFFSET = 35
     MAX_LENGTH_PER_LINE = 80
 
-    def __init__(self, short_form, long_form=None, description=None, value_required=None):
-        self.shortForm = short_form
-        self.longForm = long_form
-        self.description = description
-        self.valueRequired = value_required
+    def __init__(self, shortForm, longForm=None, description=None, optionRequired=None):
+        self.name = longForm
         self.value = None
+        self.description = description
+        self.shortForm = shortForm
+        self.longForm = longForm
+        self.optionRequired = optionRequired
 
     def __str__(self):
-        ret_string = "-" + self.shortForm + if_else(self.longForm is not None, ", --" + self.longForm, "")
-        if self.valueRequired == InputOption.OPTION_REQUIRED:
-            ret_string += "=<VALUE>"
-        elif self.valueRequired == InputOption.OPTION_OPTIONAL:
-            ret_string += "=[VALUE]"
+        retString = "-" + self.shortForm + if_else(self.longForm is not None, ", --" + self.longForm, "")
+        if self.optionRequired == InputOption.OPTION_REQUIRED:
+            retString += "=<VALUE>"
+        elif self.optionRequired == InputOption.OPTION_OPTIONAL:
+            retString += "=[VALUE]"
         else:
             pass
 
-        ret_string = ret_string.ljust(InputOption.OFFSET)
+        retString = retString.ljust(InputOption.OFFSET)
         if self.description is not None:
             if len(self.description) > InputOption.MAX_LENGTH_PER_LINE:
-                ret_string += self.description[:InputOption.MAX_LENGTH_PER_LINE] + "\n"
-                ret_string += self.description[InputOption.MAX_LENGTH_PER_LINE:].rjust(InputOption.OFFSET +
+                retString += self.description[:InputOption.MAX_LENGTH_PER_LINE] + "\n"
+                retString += self.description[InputOption.MAX_LENGTH_PER_LINE:].rjust(InputOption.OFFSET +
                                                                                        len(self.description) -
                                                                                        InputOption.MAX_LENGTH_PER_LINE)
             else:
-                ret_string += self.description
+                retString += self.description
 
-        return ret_string
+        return retString
 
     def __repr__(self):
         return self.__str__()
+
+    def asInt(self):
+        return int(self.value)
+
+    def asFloat(self):
+        return float(self.value)
+
+    def asDate(self, fmt="Y-m-d"):
+        return datetime.strptime(self.value, fmt)
+
+    def asString(self):
+        return str(self.value)

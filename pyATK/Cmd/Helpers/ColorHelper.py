@@ -34,6 +34,6 @@ class Color:
 
     @classmethod
     def colored(cls, s, foreground_color=FG_DEFAULT, modifiers=NONE):
-        str_to_print = foreground_color + s + Color.FG_DEFAULT
-        print(str_to_print)
+        toPrint = foreground_color + s + Color.FG_DEFAULT
+        print(toPrint)
 

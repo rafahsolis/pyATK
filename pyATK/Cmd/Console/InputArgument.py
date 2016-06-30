@@ -1,4 +1,5 @@
 
+
 class InputArgument:
     """
     >>> argument = InputArgument('arg-name', 'the description', InputArgument.ARGUMENT_REQUIRED)
@@ -13,11 +14,11 @@ class InputArgument:
     ARGUMENT_REQUIRED = 0x0
     ARGUMENT_OPTIONAL = 0x1
 
-    def __init__(self, argument_name, description, value_required):
-        self.name = argument_name
-        self.description = description
-        self.valueRequired = value_required
+    def __init__(self, argumentName, description, valueRequired):
+        self.name = argumentName
         self.value = None
+        self.description = description
+        self.valueRequired = valueRequired
 
     def __str__(self):
         if self.valueRequired == InputArgument.ARGUMENT_REQUIRED:

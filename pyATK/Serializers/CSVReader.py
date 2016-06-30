@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import csv
-import pyATK.filesystem.Encoding as en
-import pyATK.filesystem.Utils as fs
+import pyATK.Filesystem.Encoding as en
+import pyATK.Filesystem.Utils as fs
 
 
 class CSVReader:
@@ -20,8 +20,8 @@ class CSVReader:
     >>> import os
     >>> os.remove('tst.txt')
     """
-    def __init__(self, file_path, first_row_as_header=False, ignore_emtpy_lines=True, separator=','):
-        self.file_path = fs.get_absolute_path(file_path)
+    def __init__(self, file_path, first_row_as_header=False, ignore_emtpy_lines=True, separator=';'):
+        self.file_path = fs.getAbsolutePath(file_path)
         self.first_row_as_header = first_row_as_header
         self.ignore_emtpy_lines = ignore_emtpy_lines
         self.separator = separator
@@ -37,7 +37,7 @@ class CSVReader:
     def load(self):
         content = []
         row_count = 0
-        encoding = en.get_encoding(self.file_path)
+        encoding = en.getEncoding(self.file_path)
         if encoding is None:
             encoding = 'us-ascii'
         file = open(self.file_path, encoding=encoding)

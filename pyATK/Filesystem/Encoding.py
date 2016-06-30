@@ -10,9 +10,9 @@ ASCII_ENCODING = "us-ascii"
 encodings = (UTF_8_ENCODING, ISO_8895_1_ENCODING, WINDOWS_1252_ENCODING, MAC_ROMAN_ENCODING, ASCII_ENCODING)
 
 
-def get_encoding(filename):
+def getEncoding(filename):
     """
-    >>> get_encoding(__file__)
+    >>> getEncoding(__file__)
     'utf-8'
     """
     for encoding in encodings:
@@ -30,10 +30,10 @@ def get_encoding(filename):
             continue
 
 
-def get_data_encoding(payload):
+def getDataEncoding(payload):
     """
     >>> f = open(__file__)
-    >>> get_data_encoding(f.readlines())
+    >>> getDataEncoding(f.readlines())
     'us-ascii'
     """
     for encoding in encodings:
@@ -46,9 +46,9 @@ def get_data_encoding(payload):
             continue
 
 
-def is_ascii(filename):
+def isAscii(filename):
     """
-    >>> is_ascii(__file__)
+    >>> isAscii(__file__)
     True
     """
     try:
@@ -60,9 +60,9 @@ def is_ascii(filename):
         return True
 
 
-def is_utf8(filename):
+def isUtf8(filename):
     """
-    >>> is_utf8(__file__)
+    >>> isUtf8(__file__)
     True
     """
     try:

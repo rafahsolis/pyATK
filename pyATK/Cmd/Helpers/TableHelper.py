@@ -1,13 +1,12 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 
 class TableHelper:
     """
     >>> helper = TableHelper(79)
-    >>> helper.add_column('first name')
-    >>> helper.add_column('last name')
-    >>> helper.set_data([['my first name', 'my last name'], ['first']])
+    >>> helper.addColumn('first name')
+    >>> helper.addColumn('last name')
+    >>> helper.setData([['my first name', 'my last name'], ['first']])
     >>> helper.display()
     +--------------------------------------------------------------------------------+
     |               first name              |               last name                |
@@ -21,38 +20,37 @@ class TableHelper:
     def __init__(self, width=80):
         self.width = width
         self.headers = []
-        self.data_set = []
-        self.column_width = 0
+        self.dataSet = []
+        self.columnWidth = 0
 
-
-    def add_column(self, title):
+    def addColumn(self, title):
         self.headers.append(title)
         if self.width % len(self.headers) != 0:
             self.width += len(self.headers) - (self.width % len(self.headers))
-        self.column_width = int(self.width / len(self.headers))
+        self.columnWidth = int(self.width / len(self.headers))
 
-    def set_data(self, dataset):
-        self.data_set = dataset
-        for line in self.data_set:
+    def setData(self, dataset):
+        self.dataSet = dataset
+        for line in self.dataSet:
             if len(line) < len(self.headers):
                 for i in range(0, len(self.headers) - len(line)):
                     line.append(" ")
 
     def display(self):
-        self.print_header()
-        for line in self.data_set:
-            self.print_data_line(line)
+        self.printHeader()
+        for line in self.dataSet:
+            self.printDataLine(line)
 
-    def print_data_line(self, data_line):
+    def printDataLine(self, data_line):
         for item in data_line:
-            print("|" + str(item).center(self.column_width-1), end="")
+            print("|" + str(item).center(self.columnWidth - 1), end="")
         print(" |")
-        self.print_line_separator()
+        self.printLineSeparator()
 
-    def print_header(self):
-        self.print_line_separator()
-        self.print_data_line(self.headers)
+    def printHeader(self):
+        self.printLineSeparator()
+        self.printDataLine(self.headers)
 
-    def print_line_separator(self):
+    def printLineSeparator(self):
         print("+" + str(self.width * "-") + "+")
 

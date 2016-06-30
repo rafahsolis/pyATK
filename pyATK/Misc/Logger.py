@@ -11,21 +11,21 @@ class Logger:
     NOTSET = logging.NOTSET
 
     def __init__(self, filename, overwrite=False):
-        _format = "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s"
-        _date_format = "%Y-%m-%d %H:%M:%S"
-        _file_mode = "a"
+        format = "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s"
+        dateFormat = "%Y-%m-%d %H:%M:%S"
+        file_mode = "a"
         if overwrite is True:
-            _file_mode = "w"
+            file_mode = "w"
 
-        logging.basicConfig(filename=filename, level=logging.NOTSET, format= _format, datefmt=_date_format,
-                            filemode=_file_mode)
+        logging.basicConfig(filename=filename, level=logging.NOTSET, format=format, datefmt=dateFormat,
+                            filemode=file_mode)
         self.internalLogger = logging.getLogger(filename.split(os.pathsep)[-1])
 
-    def set_format(self, new_format):
+    def setFormat(self, new_format):
         logging.basicConfig(format=new_format)
 
-    def set_date_format(self, new_date_format):
-        logging.basicConfig(datefmt=new_date_format)
+    def setDateFormat(self, newDateFormat):
+        logging.basicConfig(datefmt=newDateFormat)
 
     def log(self, msg, level=NOTSET):
         if level == Logger.CRITICAL:

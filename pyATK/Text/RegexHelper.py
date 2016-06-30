@@ -6,25 +6,25 @@ import re
 
 class RegexHelper:
     @classmethod
-    def is_number(cls, n):
+    def isNumber(cls, n):
         """
-        >>> RegexHelper.is_number('1876123')
+        >>> RegexHelper.isNumber('1876123')
         True
-        >>> RegexHelper.is_number('a number')
+        >>> RegexHelper.isNumber('a number')
         False
         """
-        if cls.is_integer(n) or cls.is_real(n):
+        if cls.isInteger(n) or cls.isReal(n):
             return True
         return False
 
     @classmethod
-    def is_real(cls, n):
+    def isReal(cls, n):
         """
-        >>> RegexHelper.is_real('.9')
+        >>> RegexHelper.isReal('.9')
         True
-        >>> RegexHelper.is_real('0')
+        >>> RegexHelper.isReal('0')
         False
-        >>> RegexHelper.is_real('0.0')
+        >>> RegexHelper.isReal('0.0')
         True
         """
         if re.match("^[-+]?[0-9]*\.[0-9]+$", n):
@@ -32,17 +32,17 @@ class RegexHelper:
         return False
 
     @classmethod
-    def is_integer(cls, n):
+    def isInteger(cls, n):
         """
-        >>> RegexHelper.is_integer("-9")
+        >>> RegexHelper.isInteger("-9")
         True
-        >>> RegexHelper.is_integer("+982798739")
+        >>> RegexHelper.isInteger("+982798739")
         True
-        >>> RegexHelper.is_integer("0")
+        >>> RegexHelper.isInteger("0")
         True
-        >>> RegexHelper.is_integer("1.0")
+        >>> RegexHelper.isInteger("1.0")
         False
-        >>> RegexHelper.is_integer("some random string")
+        >>> RegexHelper.isInteger("some random string")
         False
         """
         if re.match("^[-+]?[0-9]+$", n):
@@ -50,15 +50,15 @@ class RegexHelper:
         return False
 
     @classmethod
-    def is_hex(cls, s):
+    def isHex(cls, s):
         """
-        >>> RegexHelper.is_hex("0x123")
+        >>> RegexHelper.isHex("0x123")
         True
-        >>> RegexHelper.is_hex("0xCAFE")
+        >>> RegexHelper.isHex("0xCAFE")
         True
-        >>> RegexHelper.is_hex("AAA")
+        >>> RegexHelper.isHex("AAA")
         False
-        >>> RegexHelper.is_hex("0xGGG")
+        >>> RegexHelper.isHex("0xGGG")
         False
         """
         if re.match("^0x[a-fA-F0-9]+$", s, re.IGNORECASE):
@@ -66,11 +66,11 @@ class RegexHelper:
         return False
 
     @classmethod
-    def is_valid_ip_address(cls, s):
+    def isValidIpAddress(cls, s):
         """
-        >>> RegexHelper.is_valid_ip_address('127.0.0.1')
+        >>> RegexHelper.isValidIpAddress('127.0.0.1')
         True
-        >>> RegexHelper.is_valid_ip_address('127 apples')
+        >>> RegexHelper.isValidIpAddress('127 apples')
         False
         """
         if re.match("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", s):
@@ -78,11 +78,11 @@ class RegexHelper:
         return False
 
     @classmethod
-    def is_blank(cls, s):
+    def isBlank(cls, s):
         """
-        >>> RegexHelper.is_blank("")
+        >>> RegexHelper.isBlank("")
         True
-        >>> RegexHelper.is_blank("not so empty")
+        >>> RegexHelper.isBlank("not so empty")
         False
         """
         if re.match("^$", s):
@@ -90,11 +90,11 @@ class RegexHelper:
         return False
 
     @classmethod
-    def is_email(cls, s):
+    def isEmail(cls, s):
         """
-        >>> RegexHelper.is_email("Test-123_456@gmail.com")
+        >>> RegexHelper.isEmail("Test-123_456@gmail.com")
         True
-        >>> RegexHelper.is_email("not really an email address")
+        >>> RegexHelper.isEmail("not really an email address")
         False
         """
         if re.match("^[a-zA-Z0-9_\.-]+@[a-zA-Z\.]+[a-zA-Z]{3}", s):

@@ -7,7 +7,7 @@
 class Stack:
     """
     >>> s = Stack()
-    >>> s.is_empty()
+    >>> s.isEmpty()
     True
     >>> s.push(1)
     >>> s.push(2)
@@ -25,7 +25,7 @@ class Stack:
     def __init__(self):
         self.internal_list = list()
 
-    def is_empty(self):
+    def isEmpty(self):
         return len(self.internal_list) == 0
 
     def pop(self):

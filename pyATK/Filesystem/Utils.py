@@ -1,23 +1,22 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import re
 import os
 import fnmatch
-from pyATK.utils.misc import if_else
+from pyATK.Misc.Misc import if_else
 
 
 ###
 # List files within folder tree (generator)
 #
-def walk_through_files(top_dir, folder_filter="", file_filter=""):
+def walkThroughFiles(top_dir, folder_filter="", file_filter=""):
     """
     >>> import os
-    >>> walk_through_files(os.getcwd())
+    >>> walkThroughFiles(os.getcwd())
     <generator object walk_through_files at 0x...>
-    >>> walk_through_files(os.getcwd(), 'src')
+    >>> walkThroughFiles(os.getcwd(), 'src')
     <generator object walk_through_files at 0x...>
-    >>> walk_through_files(os.getcwd(), '', '.py')
+    >>> walkThroughFiles(os.getcwd(), '', '.py')
     <generator object walk_through_files at 0x...>
     """
     for dir_path, _, file_names in os.walk(top_dir):
@@ -36,10 +35,10 @@ def walk_through_files(top_dir, folder_filter="", file_filter=""):
 ###
 # List child folders of top directory (generator)
 #
-def walk_through_folders(top_dir, folder_filter=""):
+def walkThroughFolders(top_dir, folder_filter=""):
     """
     >>> import os
-    >>> walk_through_folders(os.getcwd())
+    >>> walkThroughFolders(os.getcwd())
     <generator object walk_through_folders at 0x...>
     """
     for dir_path, _, _ in os.walk(top_dir):
@@ -52,19 +51,19 @@ def walk_through_folders(top_dir, folder_filter=""):
 ###
 # Returns the size of a folder's content. Returns 0 if the argument is not a folder
 #
-def folder_size(top_dir):
+def folderSize(top_dir):
     """
     >>> import os
     >>> path = os.getcwd()
     >>> os.mkdir(os.path.join(path, 'test'))
-    >>> folder_size(os.path.join(path, 'test'))
+    >>> folderSize(os.path.join(path, 'test'))
     0
     >>> file = open(os.path.join(path, 'test', 'tmp.txt'), 'w')
     >>> chars = file.write("Hello")
     >>> file.close()
-    >>> folder_size(os.path.join(path, 'test'))
+    >>> folderSize(os.path.join(path, 'test'))
     5
-    >>> folder_size('./not_found_folder')
+    >>> folderSize('./not_found_folder')
     0
     >>> os.remove(os.path.join(path, 'test', 'tmp.txt'))
     >>> os.removedirs(os.path.join(path, 'test'))
@@ -73,32 +72,32 @@ def folder_size(top_dir):
         return 0
     else:
         total_size = 0
-        for filename in walk_through_files(top_dir):
+        for filename in walkThroughFiles(top_dir):
             total_size += os.path.getsize(filename)
         return total_size
 
 
-def get_absolute_path(relative_path):
+def getAbsolutePath(relative_path):
     return os.path.abspath(relative_path)
 
 
-def compare_files(left, right):
+def compareFiles(left, right):
     """
     >>> file = open('tmp.txt' ,'w')
     >>> file.close()
     >>> file = open('tmp2.txt', 'w')
     >>> file.close()
-    >>> compare_files('tmp.txt', 'tmp2.txt')
+    >>> compareFiles('tmp.txt', 'tmp2.txt')
     0
     >>> file = open('tmp.txt', 'w')
     >>> chars = file.write('Hello')
     >>> file.close()
-    >>> compare_files('tmp.txt', 'tmp2.txt')
+    >>> compareFiles('tmp.txt', 'tmp2.txt')
     -1
     >>> file = open('tmp2.txt', 'w')
     >>> chars = file.write('Hello World')
     >>> file.close()
-    >>> compare_files('tmp.txt', 'tmp2.txt')
+    >>> compareFiles('tmp.txt', 'tmp2.txt')
     1
     """
     if not os.path.isfile(left):
@@ -119,25 +118,25 @@ def compare_files(left, right):
         return -1
 
 
-def replace_in_file(file_path, pattern, replace_by_string, case_sensitive=True):
+def replaceInFile(filePath, pattern, replaceBy, caseSensitive=True):
     """
     >>> file = open('tmp.txt', 'w')
     >>> chars = file.write('Hello')
     >>> file.close()
-    >>> replace_in_file('tmp.txt', 'Hello', 'World')
+    >>> replaceInFile('tmp.txt', 'Hello', 'World')
     >>> file = open('tmp.txt', 'r')
     >>> file.read()
     'World'
     """
     output = ""
-    abs_path = get_absolute_path(file_path)
+    abs_path = getAbsolutePath(filePath)
     if os.path.isfile(abs_path):
         file = open(abs_path, 'r')
     else:
         raise IOError(abs_path + " is not a valid file")
 
     for line in file:
-        output = output + re.sub(pattern, replace_by_string, line, if_else(case_sensitive, 0, re.IGNORECASE))
+        output += re.sub(pattern, replaceBy, line, if_else(caseSensitive, 0, re.IGNORECASE))
 
     file.close()
     file = open(abs_path, 'w')
@@ -146,17 +145,17 @@ def replace_in_file(file_path, pattern, replace_by_string, case_sensitive=True):
     file.close()
 
 
-def read_file_content(path, remove_empty_lines=False, encoding="utf-8"):
+def read_file_content(path, removeEmptyLines=False, encoding="utf-8"):
     """
     >>> data = read_file_content(__file__)
     >>> data = read_file_content(__file__, True)
     """
-    abs_path = get_absolute_path(path)
+    abs_path = getAbsolutePath(path)
     file = open(abs_path, mode="r", encoding=encoding)
     if file:
         content = ""
         for line in file:
-            if remove_empty_lines is True:
+            if removeEmptyLines is True:
                 if line != "":
                     content += line
             else:

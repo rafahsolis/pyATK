@@ -1,10 +1,7 @@
 import os
 import shutil
-import sys
-import inspect
 from pyATK.patterns.Command import AbstractCommand
-from pyATK.filesystem.Utils import get_absolute_path
-from pyATK.utils.decorators import not_implemented
+from pyATK.Filesystem.Utils import getAbsolutePath
 
 
 #
@@ -69,7 +66,7 @@ class RemoveFileCommand(AbstractCommand):
         self.file_content = None
 
     def execute(self):
-        abs_path = get_absolute_path(self.src)
+        abs_path = getAbsolutePath(self.src)
         if os.path.isfile(abs_path):
             file = open(self.src, 'r')
             self.file_content = file.read()
@@ -140,19 +137,3 @@ class RemoveTreeCommand(AbstractCommand):
 
     def undo(self):
         pass
-
-
-#
-# Helper Command factory class
-#
-class CommandFactory:
-    def __init__(self):
-        self.registered_commands = []
-        for name, obj in inspect.getmembers(sys.modules[__name__]):
-            if inspect.isclass(obj) and obj != CommandFactory:
-                self.registered_commands.append(name)
-
-    def make_command(self, command):
-        if command in self.registered_commands:
-            return getattr(sys.modules[__name__], command)
-

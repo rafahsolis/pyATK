@@ -29,11 +29,11 @@ def unique(array):
     return sorted(list(set(array)))
 
 
-def same_elements(left, right):
+def sameElements(left, right):
     """
-        >>> same_elements([1, 2, 3], [3, 2, 1])
+        >>> sameElements([1, 2, 3], [3, 2, 1])
         True
-        >>> same_elements([1, 2, 3], [1, 2, 3, 4])
+        >>> sameElements([1, 2, 3], [1, 2, 3, 4])
         False
     """
     s1 = set(left)
@@ -57,11 +57,11 @@ def without(lst, element):
     return new_lst
 
 
-def index_of(element, lst):
+def indexOf(element, lst):
     """
-    >>> index_of('e', "Hello There")
+    >>> indexOf('e', "Hello There")
     1
-    >>> index_of(1, [0, 2, 3])
+    >>> indexOf(1, [0, 2, 3])
     -1
     """
     index = -1
@@ -72,11 +72,11 @@ def index_of(element, lst):
     return -1
 
 
-def last_index_of(element, lst):
+def lastIndexOf(element, lst):
     """
-    >>> last_index_of(1, [1, 2, 3, 1, 5, 6, 1])
+    >>> lastIndexOf(1, [1, 2, 3, 1, 5, 6, 1])
     6
-    >>> last_index_of(10, [1, 2, 3, 1, 5, 6, 1])
+    >>> lastIndexOf(10, [1, 2, 3, 1, 5, 6, 1])
     -1
     """
     index = -1

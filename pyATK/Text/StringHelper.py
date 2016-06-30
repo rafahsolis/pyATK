@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*-
 
 import re
+import pyATK.utils.compat23
 
 
 class StringHelper:
     @classmethod
-    def right_of(cls, string, separator=None):
+    def rightOf(cls, string, separator=None):
         """
-        >>> StringHelper.right_of('Hello World', ' ')
+        >>> StringHelper.rightOf('Hello World', ' ')
         'World'
-        >>> StringHelper.right_of('Hello World', 'Beautiful')
+        >>> StringHelper.rightOf('Hello World', 'Beautiful')
         'Hello World'
-        >>> StringHelper.right_of('Hello World')
+        >>> StringHelper.rightOf('Hello World')
         'Hello World'
         """
         if separator is None:
@@ -24,13 +25,13 @@ class StringHelper:
                 return string
 
     @classmethod
-    def left_of(cls, string, separator=None):
+    def leftOf(cls, string, separator=None):
         """
-        >>> StringHelper.left_of('Hello World', ' ')
+        >>> StringHelper.leftOf('Hello World', ' ')
         'Hello'
-        >>> StringHelper.left_of('Hello World', 'Beautiful')
+        >>> StringHelper.leftOf('Hello World', 'Beautiful')
         'Hello World'
-        >>> StringHelper.left_of('Hello World')
+        >>> StringHelper.leftOf('Hello World')
         'Hello World'
         """
         if separator is None:
@@ -104,17 +105,17 @@ class StringHelper:
         return cls.upper(s[0]) + s[1:]
 
     @classmethod
-    def capitalize_words(cls, s):
+    def capitalizeWords(cls, s):
         """
-        >>> StringHelper.capitalize_words("hello world")
+        >>> StringHelper.capitalizeWords("hello world")
         'Hello World'
         """
         return " ".join([cls.capitalize(s) for s in s.split(" ")])
 
     @classmethod
-    def remove_accents(cls, text):
+    def removeAccents(cls, text):
         """
-        >>> StringHelper.remove_accents("Je suis allé à l'école")
+        >>> StringHelper.removeAccents("Je suis allé à l'école")
         "Je suis alle a l'ecole"
         """
         for plain, funny_set in (('a', 'áàâãäå\u0101'), ('e', 'éèêẽë'), ('i', "íìîĩï"), ('o', 'óòôõöø'),
@@ -158,9 +159,9 @@ class StringHelper:
         return previous_row[-1]
 
     @classmethod
-    def longest_common_substring(cls, s1, s2):
+    def longestCommonSubstring(cls, s1, s2):
         """
-        >>> StringHelper.longest_common_substring("Hello World 123", "Hello World")
+        >>> StringHelper.longestCommonSubstring("Hello World 123", "Hello World")
         'Hello World'
         """
         m = [[0] * (1 + len(s2)) for i in range(1 + len(s1))]
@@ -177,9 +178,9 @@ class StringHelper:
         return s1[x_longest - longest: x_longest]
 
     @classmethod
-    def natural_sort(cls, lst):
+    def naturalSort(cls, lst):
         """
-        >>> StringHelper.natural_sort(["elem1", "elem10", "elem2", "elem20"])
+        >>> StringHelper.naturalSort(["elem1", "elem10", "elem2", "elem20"])
         ['elem1', 'elem2', 'elem10', 'elem20']
         """
         return sorted(lst, key=lambda key: [(lambda c: int(c) if c.isdigit() else c.lower())(c)
