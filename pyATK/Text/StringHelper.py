@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import re
-import pyATK.utils.compat23
 
 
 class StringHelper:

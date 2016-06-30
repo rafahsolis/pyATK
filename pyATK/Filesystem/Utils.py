@@ -13,11 +13,11 @@ def walkThroughFiles(top_dir, folder_filter="", file_filter=""):
     """
     >>> import os
     >>> walkThroughFiles(os.getcwd())
-    <generator object walk_through_files at 0x...>
+    <generator object walkThroughFiles at 0x...>
     >>> walkThroughFiles(os.getcwd(), 'src')
-    <generator object walk_through_files at 0x...>
+    <generator object walkThroughFiles at 0x...>
     >>> walkThroughFiles(os.getcwd(), '', '.py')
-    <generator object walk_through_files at 0x...>
+    <generator object walkThroughFiles at 0x...>
     """
     for dir_path, _, file_names in os.walk(top_dir):
         if folder_filter in dir_path:
@@ -39,7 +39,7 @@ def walkThroughFolders(top_dir, folder_filter=""):
     """
     >>> import os
     >>> walkThroughFolders(os.getcwd())
-    <generator object walk_through_folders at 0x...>
+    <generator object walkThroughFolders at 0x...>
     """
     for dir_path, _, _ in os.walk(top_dir):
         if folder_filter in dir_path:

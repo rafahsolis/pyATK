@@ -23,6 +23,9 @@ class BaseApplication(metaclass=ABCMeta):
         self.output = Output()
 
         self.addOption('h', 'help', 'Displays this help message', InputOption.OPTION_NONE)
+        self.addOption('q', 'quiet', 'Do not output any message', InputOption.OPTION_NONE)
+        self.addOption('V', 'version', 'Displays this application version', InputOption.OPTION_NONE)
+        self.addOption('v', 'verbose', 'Increase verbosity level of messages', InputOption.OPTION_NONE)
 
     def setName(self, name):
         self.name = name

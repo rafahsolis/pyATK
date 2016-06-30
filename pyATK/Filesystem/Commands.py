@@ -1,6 +1,6 @@
 import os
 import shutil
-from pyATK.patterns.Command import AbstractCommand
+from pyATK.Filesystem.AbstractCommand import AbstractCommand
 from pyATK.Filesystem.Utils import getAbsolutePath
 
 
