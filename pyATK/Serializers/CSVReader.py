@@ -9,8 +9,8 @@ import pyATK.Filesystem.Utils as fs
 class CSVReader:
     """
     >>> f = open('tst.txt', 'w')
-    >>> chars = f.write("header1,header2,header3\\n")
-    >>> chars = f.write("field1,field2,field3")
+    >>> chars = f.write("header1;header2;header3\\n")
+    >>> chars = f.write("field1;field2;field3")
     >>> f.close()
     >>> reader = CSVReader('tst.txt')
     >>> reader.load()
