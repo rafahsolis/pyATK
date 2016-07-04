@@ -23,20 +23,20 @@ class Stack:
     1
     """
     def __init__(self):
-        self.internal_list = list()
+        self.internalList = list()
 
     def isEmpty(self):
-        return len(self.internal_list) == 0
+        return len(self.internalList) == 0
 
     def pop(self):
-        return self.internal_list.pop() if self.internal_list else None
+        return self.internalList.pop() if len(self.internalList) != 0 else None
 
     def push(self, element):
-        self.internal_list.append(element)
+        self.internalList.append(element)
 
     def top(self):
-        return self.internal_list[-1]
+        return self.internalList[-1] if len(self.internalList) != 0 else None
 
     def size(self):
-        return len(self.internal_list)
+        return len(self.internalList)
 
