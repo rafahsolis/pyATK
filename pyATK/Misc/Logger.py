@@ -3,6 +3,16 @@ import os
 
 
 class Logger:
+    """
+    >>> logger = Logger("test.log", True)
+    >>> logger.setFormat("[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
+    >>> logger.setDateFormat("%Y-%m-%d %H:%M:%S")
+    >>> logger.critical("Critical Error")
+    >>> logger.error("Error")
+    >>> logger.warning("Warning")
+    >>> logger.info("Info")
+    >>> logger.debug("Debug")
+    """
     CRITICAL = logging.CRITICAL
     ERROR = logging.ERROR
     WARNING = logging.WARNING
@@ -45,7 +55,7 @@ class Logger:
     def error(self, msg):
         self.log(msg, Logger.ERROR)
 
-    def warn(self, msg):
+    def warning(self, msg):
         self.log(msg, Logger.WARNING)
 
     def info(self, msg):

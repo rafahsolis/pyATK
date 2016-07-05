@@ -6,6 +6,15 @@ from pyATK.Cmd.Base.MissingArgumentException import MissingArgumentException
 
 
 class Input:
+    """
+    >>> input = Input()
+    >>> arg = InputArgument('project', 'null', InputArgument.ARGUMENT_REQUIRED)
+    >>> arg.value = "Project Value"
+    >>> input.registerArgument(arg)
+    >>> arg = input.getArgument(arg.name)
+    >>> opt = InputOption("help", "null description", InputOption.OPTION_REQUIRED)
+    >>> input.registerOption(opt)
+    """
 
     HELP_REQUIRED = 0x01
 

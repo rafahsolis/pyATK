@@ -33,22 +33,6 @@ def walkThroughFiles(top_dir, folder_filter="", file_filter=""):
 
 
 ###
-# List child folders of top directory (generator)
-#
-def walkThroughFolders(top_dir, folder_filter=""):
-    """
-    >>> import os
-    >>> walkThroughFolders(os.getcwd())
-    <generator object walkThroughFolders at 0x...>
-    """
-    for dir_path, _, _ in os.walk(top_dir):
-        if folder_filter in dir_path:
-            pass
-        else:
-            yield dir_path
-
-
-###
 # Returns the size of a folder's content. Returns 0 if the argument is not a folder
 #
 def folderSize(top_dir):

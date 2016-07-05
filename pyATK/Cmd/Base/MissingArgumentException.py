@@ -2,6 +2,11 @@
 
 
 class MissingArgumentException(Exception):
+    """
+    >>> exception = MissingArgumentException("1st argument")
+    >>> exception.__str__()
+    'Missing value for \"1st argument\"'
+    """
     def __init__(self, arg):
         self.argument = arg
 

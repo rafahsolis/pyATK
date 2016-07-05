@@ -1,11 +1,15 @@
 
 from pyATK.Cmd.Helpers.ColorHelper import Color
-from pyATK.Cmd.Helpers.IOHelper import IOHelper
 from pyATK.Cmd.Helpers.ProgressHelper import ProgressBarHelper
 from pyATK.Cmd.Helpers.TableHelper import TableHelper
 
 
 class Output:
+    """
+    >>> output = Output()
+    >>> output.write("Hello World")
+    Hello World
+    """
     IO_HELPER = 0x01
     PROGRESS_HELPER = 0x02
     TABLE_HELPER = 0x04
@@ -20,5 +24,3 @@ class Output:
         else:
             Color.colored(msg, color)
 
-    def getHelper(self, name):
-        return self.helpers[name]

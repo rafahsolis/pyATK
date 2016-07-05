@@ -1,6 +1,6 @@
 from datetime import datetime
 from pyATK.Misc.Misc import if_else
-
+from pyATK.Text.RegexHelper import RegexHelper
 
 class InputOption:
     """
@@ -18,6 +18,18 @@ class InputOption:
     >>> opt = InputOption('o', 'output-file', 'the output file', InputOption.OPTION_OPTIONAL)
     >>> opt.__str__()
     '-o, --output-file=[VALUE]          the output file'
+    >>> opt = InputOption('i', "iterations", "number of iterations", InputOption.OPTION_REQUIRED)
+    >>> opt.value = '2'
+    >>> opt.asNumber()
+    2
+    >>> opt.value = "2.3"
+    >>> opt.asNumber()
+    2.3
+    >>> opt.asString()
+    '2.3'
+    >>> opt.value = "2016-05-03"
+    >>> opt.asDate()
+    '2016-05'
     """
     OPTION_REQUIRED = 0x0
     OPTION_OPTIONAL = 0x1
@@ -57,14 +69,13 @@ class InputOption:
     def __repr__(self):
         return self.__str__()
 
-    def asInt(self):
-        return int(self.value)
-
-    def asFloat(self):
+    def asNumber(self):
+        if RegexHelper.isInteger(self.value):
+            return int(self.value)
         return float(self.value)
 
-    def asDate(self, fmt="Y-m-d"):
-        return datetime.strptime(self.value, fmt)
+    def asDate(self, fmt="%Y-%m"):
+        return datetime.strptime(self.value, "%Y-%m-%d").strftime(fmt)
 
     def asString(self):
         return str(self.value)

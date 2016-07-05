@@ -11,6 +11,16 @@ from pyATK.Cmd.Base.MissingArgumentException import MissingArgumentException
 
 
 class BaseApplication(metaclass=ABCMeta):
+    """
+    >>> myApp = BaseApplication()
+    >>> myApp.setName("Test App")
+    <pyATK.Cmd.Base.BaseApplication.BaseApplication object at 0x...>
+    >>> myApp.setVersion("0.0.1")
+    <pyATK.Cmd.Base.BaseApplication.BaseApplication object at 0x...>
+    >>> myApp.addOption('h', 'help', 'Displays this help message', InputOption.OPTION_NONE)
+    <pyATK.Cmd.Base.BaseApplication.BaseApplication object at 0x...>
+    """
+
     STATUS_SUCCESS = 0x0
     STATUS_FAILURE = 0x1
 
