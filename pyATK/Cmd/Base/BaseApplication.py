@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function
+from six import with_metaclass
 import sys
 import getopt
 from abc import ABCMeta
@@ -10,7 +12,7 @@ from pyATK.Cmd.Console.Output import Output
 from pyATK.Cmd.Base.MissingArgumentException import MissingArgumentException
 
 
-class BaseApplication(metaclass=ABCMeta):
+class BaseApplication(with_metaclass(ABCMeta)):
     """
     >>> myApp = BaseApplication()
     >>> myApp.setName("Test App")
@@ -82,6 +84,8 @@ class BaseApplication(metaclass=ABCMeta):
         return msg
 
     def run(self):
+        self.doConfigure()
+
         try:
             if self.input.parse(sys.argv[1:]) == self.input.HELP_REQUIRED:
                 print(self.getHelpMessage())
@@ -90,17 +94,22 @@ class BaseApplication(metaclass=ABCMeta):
                 self.doRun()
                 sys.exit(self.STATUS_SUCCESS)
 
-        except getopt.GetoptError as err:
+        except getopt.GetoptError:
+            err = sys.exc_info()[1]
             print(err)
             sys.exit(self.STATUS_FAILURE)
 
-        except MissingArgumentException as err:
+        except MissingArgumentException:
+            err = sys.exc_info()[1]
             print(err)
             sys.exit(self.STATUS_FAILURE)
 
         # except Exception as err:
         #     print(err)
         #     return self.STATUS_FAILURE
+
+    def doConfigure(self):
+        raise NotImplementedError("This methid is not implemenent")
 
     def doRun(self):
         raise NotImplementedError("This method is not implemented!")

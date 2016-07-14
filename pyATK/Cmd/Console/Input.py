@@ -37,11 +37,11 @@ class Input:
 
     def validate(self):
         for argument in self.arguments:
-            if argument.valueRequired == InputArgument.ARGUMENT_REQUIRED and argument.value is None:
+            if argument.value is None:
                 raise MissingArgumentException('Missing value for ' + argument.name)
 
         for option in self.options:
-            if option.optionRequired == InputOption.OPTION_REQUIRED and option.value is None:
+            if option.optionRequired == InputOption.OPTION_REQUIRED and option.isDefined is True and option.value is None:
                 raise MissingArgumentException('Missing value for ' + option.name)
 
     def parse(self, cli_args):
@@ -54,15 +54,15 @@ class Input:
             for couple in self.argumentsHelper.getOptionCouples():
                 if opt in couple:
                     self.argumentsHelper.option(opt).value = value
+                    self.argumentsHelper.option(opt).isDefined = True
                     break
 
         index = 0
-        for arg_val in args:
-            self.arguments[index] = arg_val
+        for arg in self.arguments:
+            arg.value = args[index]
             index += 1
 
         self.validate()
-
 
     def getShortFormString(self):
         result = ""

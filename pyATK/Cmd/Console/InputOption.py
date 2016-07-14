@@ -44,6 +44,7 @@ class InputOption:
         self.shortForm = shortForm
         self.longForm = longForm
         self.optionRequired = optionRequired
+        self.isDefined = False
 
     def __str__(self):
         retString = "-" + self.shortForm + if_else(self.longForm is not None, ", --" + self.longForm, "")

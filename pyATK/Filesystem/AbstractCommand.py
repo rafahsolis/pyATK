@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from abc import ABCMeta
+from six import with_metaclass
 
-
-class AbstractCommand(metaclass=ABCMeta):
+class AbstractCommand(with_metaclass(ABCMeta)):
     def __init__(self):
         pass
 
