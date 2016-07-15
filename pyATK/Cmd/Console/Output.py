@@ -9,6 +9,9 @@ class Output:
     >>> output = Output()
     >>> output.write("Hello World")
     Hello World
+    >>> import pyATK
+    >>> output.write("Hello World", pyATK.Cmd.Helpers.ColorHelper.Color.FG_RED)
+    \x1b[31mHello World\x1b[39m
     """
     IO_HELPER = 0x01
     PROGRESS_HELPER = 0x02

@@ -8,7 +8,6 @@ from pyATK.Cmd.Console.InputArgument import InputArgument
 from pyATK.Cmd.Console.InputOption import InputOption
 from pyATK.Cmd.Console.Input import Input
 from pyATK.Cmd.Console.Output import Output
-from pyATK.Cmd.Base.MissingArgumentException import MissingArgumentException
 
 
 class BaseApplication(with_metaclass(ABCMeta)):
@@ -18,7 +17,9 @@ class BaseApplication(with_metaclass(ABCMeta)):
     <pyATK.Cmd.Base.BaseApplication.BaseApplication object at 0x...>
     >>> myApp.setVersion("0.0.1")
     <pyATK.Cmd.Base.BaseApplication.BaseApplication object at 0x...>
-    >>> myApp.addOption('h', 'help', 'Displays this help message', InputOption.OPTION_NONE)
+    >>> myApp.addArgument("argument", "argument description")
+    <pyATK.Cmd.Base.BaseApplication.BaseApplication object at 0x...>
+    >>> myApp.addOption("o", "option", "option description")
     <pyATK.Cmd.Base.BaseApplication.BaseApplication object at 0x...>
     """
 
@@ -41,7 +42,7 @@ class BaseApplication(with_metaclass(ABCMeta)):
         self.version = version
         return self
 
-    def addOption(self, shortForm, longForm=None, description=None, optionRequired=InputOption.OPTION_NONE, overrides=None):
+    def addOption(self, shortForm, longForm=None, description=None, optionRequired=InputOption.OPTION_NONE):
         newOption = InputOption(shortForm, longForm, description, optionRequired)
         self.input.registerOption(newOption)
         return self

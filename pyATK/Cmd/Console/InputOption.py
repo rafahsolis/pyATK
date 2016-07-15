@@ -19,7 +19,9 @@ class InputOption:
     >>> opt.__str__()
     '-o, --output-file=[VALUE]          the output file'
     >>> opt = InputOption('i', "iterations", "number of iterations", InputOption.OPTION_REQUIRED)
-    >>> opt.value = '2'
+    >>> opt.getOptionCouple()
+    ['-i', '--iterations']
+    >>> opt.setValue('2')
     >>> opt.asNumber()
     2
     >>> opt.value = "2.3"
