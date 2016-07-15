@@ -2,7 +2,6 @@
 from __future__ import unicode_literals, print_function
 from six import with_metaclass
 import sys
-import getopt
 from abc import ABCMeta
 
 from pyATK.Cmd.Console.InputArgument import InputArgument
@@ -34,11 +33,6 @@ class BaseApplication(with_metaclass(ABCMeta)):
         self.input = Input()
         self.output = Output()
 
-        self.addOption('h', 'help', 'Displays this help message', InputOption.OPTION_NONE)
-        self.addOption('q', 'quiet', 'Do not output any message', InputOption.OPTION_NONE)
-        self.addOption('V', 'version', 'Displays this application version', InputOption.OPTION_NONE)
-        self.addOption('v', 'verbose', 'Increase verbosity level of messages', InputOption.OPTION_NONE)
-
     def setName(self, name):
         self.name = name
         return self
@@ -47,69 +41,29 @@ class BaseApplication(with_metaclass(ABCMeta)):
         self.version = version
         return self
 
-    def addOption(self, shortForm, longForm=None, description=None, optionRequired=InputOption.OPTION_NONE):
-        self.input.registerOption(InputOption(shortForm, longForm, description, optionRequired))
+    def addOption(self, shortForm, longForm=None, description=None, optionRequired=InputOption.OPTION_NONE, overrides=None):
+        newOption = InputOption(shortForm, longForm, description, optionRequired)
+        self.input.registerOption(newOption)
         return self
 
-    def addArgument(self, argumentName, description, valueRequired):
-        self.input.registerArgument(InputArgument(argumentName, description, valueRequired))
+    def addArgument(self, argumentName, description, defaultValue=None):
+        newArgument = InputArgument(argumentName, description, defaultValue)
+        self.input.registerArgument(newArgument)
         return self
-
-    def getHelpMessage(self):
-        msg = self.name
-        if self.version != "":
-            msg += ", version : " + self.version + "\n"
-        else:
-            msg += "\n"
-
-        msg += "Usage:"
-
-        argString = ""
-        if len(self.input.arguments) == 1:
-            argString = str(self.input.arguments[0])
-        else:
-            count = 0
-            for arg in self.input.arguments:
-                if count != len(self.input.arguments) - 1:
-                    argString += str(arg) + " "
-                else:
-                    argString += str(arg)
-                count += 1
-
-        msg += self.name + "[OPTIONS] " + argString + "\n"
-        msg += "Options:\n"
-        for option in self.input.options:
-            msg += str(option) + "\n"
-        msg += "\n"
-        return msg
 
     def run(self):
         self.doConfigure()
 
-        try:
-            if self.input.parse(sys.argv[1:]) == self.input.HELP_REQUIRED:
-                print(self.getHelpMessage())
-                sys.exit(self.STATUS_SUCCESS)
-            else:
-                self.doRun()
-                sys.exit(self.STATUS_SUCCESS)
-
-        except getopt.GetoptError:
-            err = sys.exc_info()[1]
-            print(err)
-            sys.exit(self.STATUS_FAILURE)
-
-        except MissingArgumentException:
-            err = sys.exc_info()[1]
-            print(err)
-            sys.exit(self.STATUS_FAILURE)
+        self.input.parse(sys.argv)
+        self.doRun()
+        sys.exit(self.STATUS_SUCCESS)
 
         # except Exception as err:
         #     print(err)
         #     return self.STATUS_FAILURE
 
     def doConfigure(self):
-        raise NotImplementedError("This methid is not implemenent")
+        raise NotImplementedError("This method is not implemented!")
 
     def doRun(self):
         raise NotImplementedError("This method is not implemented!")

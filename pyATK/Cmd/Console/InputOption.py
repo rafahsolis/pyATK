@@ -37,17 +37,25 @@ class InputOption:
     OFFSET = 35
     MAX_LENGTH_PER_LINE = 80
 
-    def __init__(self, shortForm, longForm=None, description=None, optionRequired=None):
+    def __init__(self, shortForm, longForm=None, description=None, optionRequired=None, type_=str, defaultValue=None):
         self.name = longForm
         self.value = None
         self.description = description
-        self.shortForm = shortForm
-        self.longForm = longForm
+        self.shortForm = "-" + shortForm
+        self.longForm = "--" + longForm
         self.optionRequired = optionRequired
         self.isDefined = False
+        self.defaultValue = defaultValue
+        self.type = type_
+
+    def setValue(self, value):
+        self.value = value
+
+    def getOptionCouple(self):
+        return [self.shortForm, self.longForm]
 
     def __str__(self):
-        retString = "-" + self.shortForm + if_else(self.longForm is not None, ", --" + self.longForm, "")
+        retString = self.shortForm + if_else(self.longForm is not None, ", " + self.longForm, "")
         if self.optionRequired == InputOption.OPTION_REQUIRED:
             retString += "=<VALUE>"
         elif self.optionRequired == InputOption.OPTION_OPTIONAL:
