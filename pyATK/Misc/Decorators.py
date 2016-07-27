@@ -31,7 +31,7 @@ def posixOnly(func):
     def wrapper(*args, **kwargs):
         return func(*args, **kwargs)
         
-    if os.name == "nt":
+    if os.name == "posix":
         return wrapper
     raise Exception("Not available on " + os.name + " platform")
     
