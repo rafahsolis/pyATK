@@ -47,8 +47,8 @@ class BaseApplication(with_metaclass(ABCMeta)):
         self.input.registerOption(newOption)
         return self
 
-    def addArgument(self, argumentName, description, defaultValue=None):
-        newArgument = InputArgument(argumentName, description, defaultValue)
+    def addArgument(self, argumentName, description, mode=InputArgument.ARGUMENT_REQUIRED, type_=str, defaultValue=None):
+        newArgument = InputArgument(argumentName, description, mode=mode, defaultValue=defaultValue, type_=type_)
         self.input.registerArgument(newArgument)
         return self
 

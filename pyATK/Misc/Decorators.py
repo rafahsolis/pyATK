@@ -64,17 +64,14 @@ def timeout(seconds=10, msg="Function timed out"):
     return wrapper
 
 
-class timeit(ContextDecorator):
-    def __init__(self):
-        self.start = None
-        self.end = None
-        
-    def __enter__(self):
-        self.start = time.time()
-
-    def __exit__(self, *exc):
-        self.end = time.time()
-        print("Execution time is " + str(self.end - self.start) + " seconds")
+def timeit(fn):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        retVal = fn(*args, **kwargs)
+        end = time.time()
+        print("Execution time is " + str(end - start) + " seconds")
+        return retVal
+    return wrapper
         
     
 def retry(nb=3, delay=1):

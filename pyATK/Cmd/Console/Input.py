@@ -29,7 +29,7 @@ class Input:
 
     def registerArgument(self, argument):
         self.arguments.append(argument)
-        self.parser.add_argument(argument.name, type=argument.type)
+        self.parser.add_argument(argument.name, type=argument.type, default=argument.value, nargs=argument.mode)
 
     def getOption(self, optName):
         return self.argumentsHelper.option(optName).value

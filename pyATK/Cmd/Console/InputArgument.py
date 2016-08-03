@@ -4,11 +4,15 @@ class InputArgument:
     """
     """
 
-    def __init__(self, argumentName, description, defaultValue=None, type_=str):
+    ARGUMENT_REQUIRED = 1
+    ARGUMENT_OPTIONAL = '?'
+
+    def __init__(self, argumentName, description, mode=ARGUMENT_REQUIRED, defaultValue=None, type_=str):
         self.name = argumentName
         self.value = defaultValue
         self.description = description
         self.type = type_
+        self.mode = mode
 
     def setValue(self, value):
         self.value = value
