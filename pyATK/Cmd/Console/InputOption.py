@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from datetime import datetime
 from pyATK.Misc.Misc import if_else
 from pyATK.Text.RegexHelper import RegexHelper
+
 
 class InputOption:
     """

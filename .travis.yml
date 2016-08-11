@@ -11,6 +11,6 @@ script: py.test --doctest-modules pyATK/ --cov=pyATK/
 install:
   - pip install pytest pytest-cov
   - pip install coveralls
-  - pip install six
+
 after_success:
   - coveralls

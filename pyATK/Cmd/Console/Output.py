@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from pyATK.Cmd.Helpers.ColorHelper import Color
 from pyATK.Cmd.Helpers.ProgressHelper import ProgressBarHelper
 from pyATK.Cmd.Helpers.TableHelper import TableHelper

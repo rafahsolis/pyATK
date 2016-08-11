@@ -1,9 +1,8 @@
-import getopt
+# -*- coding: utf-8 -*-
 import argparse
 from pyATK.Cmd.Console.InputOption import InputOption
 from pyATK.Cmd.Console.InputArgument import InputArgument
 from pyATK.Cmd.Helpers.ArgumentsHelper import ArgumentsHelper
-from pyATK.Cmd.Base.MissingArgumentException import MissingArgumentException
 
 
 class Input:

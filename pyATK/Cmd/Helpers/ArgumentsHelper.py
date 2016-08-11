@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 
 class ArgumentsHelper:
     def __init__(self, input_):

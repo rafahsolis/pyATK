@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
-import abc
-from six import with_metaclass
+from abc import abstractmethod
 
 
-class AbstractCommand(with_metaclass(abc.ABCMeta)):
-    @abc.abstractmethod
+class AbstractCommand:
     def __init__(self):
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def execute(self):
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def undo(self):
         pass

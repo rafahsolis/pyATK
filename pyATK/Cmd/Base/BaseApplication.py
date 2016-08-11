@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, print_function
-from six import with_metaclass
+
 import sys
-from abc import ABCMeta
 
 from pyATK.Cmd.Console.InputArgument import InputArgument
 from pyATK.Cmd.Console.InputOption import InputOption
@@ -10,7 +8,7 @@ from pyATK.Cmd.Console.Input import Input
 from pyATK.Cmd.Console.Output import Output
 
 
-class BaseApplication(with_metaclass(ABCMeta)):
+class BaseApplication:
     """
     >>> myApp = BaseApplication()
     >>> myApp.setName("Test App")
@@ -65,6 +63,7 @@ class BaseApplication(with_metaclass(ABCMeta)):
 
     def doConfigure(self):
         raise NotImplementedError("This method is not implemented!")
+
 
     def doRun(self):
         raise NotImplementedError("This method is not implemented!")
