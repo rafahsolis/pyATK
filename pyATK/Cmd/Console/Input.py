@@ -35,11 +35,11 @@ class Input:
 
     def registerOption(self, option):
         self.options.append(option)
-        if option.optionRequired == InputOption.OPTION_REQUIRED:
-            isRequired = True
+        if option.optionRequired == InputOption.OPTION_NONE:
+            self.parser.add_argument(option.shortForm, option.longForm, action="store_true")
         else:
-            isRequired = False
-        self.parser.add_argument(option.shortForm, option.longForm, required=isRequired)
+            self.parser.add_argument(option.shortForm, option.longForm)
+
 
     def parse(self, cli_args):
         parsed = self.parser.parse_args(cli_args[1:])

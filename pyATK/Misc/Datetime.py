@@ -1,28 +1,28 @@
 # -*- coding: utf-8 -*-
 
-from time import strptime
+import time
 
 
 class LocalTime:
     """
     >>> t = LocalTime()
-    >>> t.human_format()
+    >>> t.humanize()
     '0s'
     >>> t2 = LocalTime.from_string("2:45:56")
     >>> t2 = t2 + t
-    >>> t2.human_format()
+    >>> t2.humanize()
     '2h45m56s'
     >>> t2 = t2 - t
-    >>> t2.human_format()
+    >>> t2.humanize()
     '2h45m56s'
     >>> t3 = LocalTime(seconds=34214000)
-    >>> t3.human_format()
+    >>> t3.humanize()
     '1yr1mth1d'
     """
     def __init__(self, hours=0, minutes=0, seconds=0):
         self.seconds = seconds + 60 * minutes + 3600 * hours
 
-    def human_format(self):
+    def humanize(self):
         (y, m, d, h, mn, s) = self.time_tuple()
         x = []
         if y:
@@ -51,7 +51,7 @@ class LocalTime:
 
     @classmethod
     def from_string(cls, s, fmt="%H:%M:%S"):
-        t = strptime(s, fmt)
+        t = time.strptime(s, fmt)
         return cls(t.tm_hour, t.tm_min, t.tm_sec)
 
     def __add__(self, other):
@@ -61,5 +61,9 @@ class LocalTime:
     def __sub__(self, other):
         seconds = self.seconds - other.seconds
         return LocalTime(seconds=seconds)
+
+    @classmethod
+    def now(cls):
+        return LocalTime(seconds=time.time())
 
 

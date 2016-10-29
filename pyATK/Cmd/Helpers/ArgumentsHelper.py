@@ -10,7 +10,9 @@ class ArgumentsHelper:
             name = name[1:]
 
         for option in self.input.options:
-            if name == option.name:
+            shortForm = option.shortForm.replace("-", "")
+            longForm = option.longForm.replace("-", "")
+            if name == shortForm or name == longForm:
                 return option
         raise Exception("Option " + name + " was not found")
 
