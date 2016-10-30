@@ -12,8 +12,6 @@ At the time being, only Python 3.3+ is supported.
 ### How to install:
 "pip3 install pyATK", And you're good to go :)
 
-N.B: For this development release, pip must be issued with _"--pre"_ option
-
 ### Overview:
 #### Cmd:
 * Micro framework for CLI applications
