@@ -3,15 +3,15 @@ from __future__ import unicode_literals
 import re
 
 
-class StringHelper:
+class String:
     @classmethod
     def rightOf(cls, string, separator=None):
         """
-        >>> StringHelper.rightOf('Hello World', ' ')
+        >>> String.rightOf('Hello World', ' ')
         'World'
-        >>> StringHelper.rightOf('Hello World', 'Beautiful')
+        >>> String.rightOf('Hello World', 'Beautiful')
         'Hello World'
-        >>> StringHelper.rightOf('Hello World')
+        >>> String.rightOf('Hello World')
         'Hello World'
         """
         if separator is None:
@@ -25,11 +25,11 @@ class StringHelper:
     @classmethod
     def leftOf(cls, string, separator=None):
         """
-        >>> StringHelper.leftOf('Hello World', ' ')
+        >>> String.leftOf('Hello World', ' ')
         'Hello'
-        >>> StringHelper.leftOf('Hello World', 'Beautiful')
+        >>> String.leftOf('Hello World', 'Beautiful')
         'Hello World'
-        >>> StringHelper.leftOf('Hello World')
+        >>> String.leftOf('Hello World')
         'Hello World'
         """
         if separator is None:
@@ -45,17 +45,17 @@ class StringHelper:
         """
         Formats an ordinal.
         Doesn't handle negative numbers.
-        >>> StringHelper.ordinal(-1)
+        >>> String.ordinal(-1)
 
-        >>> StringHelper.ordinal(1)
+        >>> String.ordinal(1)
         '1st'
-        >>> StringHelper.ordinal(0)
+        >>> String.ordinal(0)
         '0th'
-        >>> StringHelper.ordinal(13)
+        >>> String.ordinal(13)
         '13th'
-        >>> StringHelper.ordinal(101)
+        >>> String.ordinal(101)
         '101st'
-        >>> [StringHelper.ordinal(x) for x in [111, 112, 113, 114, 115]]
+        >>> [String.ordinal(x) for x in [111, 112, 113, 114, 115]]
         ['111th', '112th', '113th', '114th', '115th']
         """
         if n < 0:
@@ -67,11 +67,11 @@ class StringHelper:
     @classmethod
     def upper(cls, c):
         """
-        >>> StringHelper.upper('a')
+        >>> String.upper('a')
         'A'
-        >>> StringHelper.upper('A')
+        >>> String.upper('A')
         'A'
-        >>> StringHelper.upper('1')
+        >>> String.upper('1')
         '1'
         """
         if ord(c) in range(97, 122):
@@ -81,11 +81,11 @@ class StringHelper:
     @classmethod
     def lower(cls, c):
         """
-        >>> StringHelper.lower('A')
+        >>> String.lower('A')
         'a'
-        >>> StringHelper.lower('a')
+        >>> String.lower('a')
         'a'
-        >>> StringHelper.lower('1')
+        >>> String.lower('1')
         '1'
         """
         if ord(c) in range(65, 90):
@@ -95,9 +95,9 @@ class StringHelper:
     @classmethod
     def capitalize(cls, s):
         """
-        >>> StringHelper.capitalize('hello there')
+        >>> String.capitalize('hello there')
         'Hello there'
-        >>> StringHelper.capitalize('Hello there')
+        >>> String.capitalize('Hello there')
         'Hello there'
         """
         return cls.upper(s[0]) + s[1:]
@@ -105,7 +105,7 @@ class StringHelper:
     @classmethod
     def capitalizeWords(cls, s):
         """
-        >>> StringHelper.capitalizeWords("hello world")
+        >>> String.capitalizeWords("hello world")
         'Hello World'
         """
         return " ".join([cls.capitalize(s) for s in s.split(" ")])
@@ -113,7 +113,7 @@ class StringHelper:
     @classmethod
     def removeAccents(cls, text):
         """
-        >>> StringHelper.removeAccents("Je suis allé à l'école")
+        >>> String.removeAccents("Je suis allé à l'école")
         "Je suis alle a l'ecole"
         """
         for plain, funny_set in (('a', 'áàâãäå\u0101'), ('e', 'éèêẽë'), ('i', "íìîĩï"), ('o', 'óòôõöø'),
@@ -127,15 +127,15 @@ class StringHelper:
     @classmethod
     def levenshtein(cls, s1, s2):
         """
-        >>> StringHelper.levenshtein("Hello", "Hell")
+        >>> String.levenshtein("Hello", "Hell")
         1
-        >>> StringHelper.levenshtein("Cat", "cat")
+        >>> String.levenshtein("Cat", "cat")
         1
-        >>> StringHelper.levenshtein("Cat", "Dog")
+        >>> String.levenshtein("Cat", "Dog")
         3
-        >>> StringHelper.levenshtein("Cat", "Dodge")
+        >>> String.levenshtein("Cat", "Dodge")
         5
-        >>> StringHelper.levenshtein("Cat", "")
+        >>> String.levenshtein("Cat", "")
         3
         """
         if len(s1) < len(s2):
@@ -159,7 +159,7 @@ class StringHelper:
     @classmethod
     def longestCommonSubstring(cls, s1, s2):
         """
-        >>> StringHelper.longestCommonSubstring("Hello World 123", "Hello World")
+        >>> String.longestCommonSubstring("Hello World 123", "Hello World")
         'Hello World'
         """
         m = [[0] * (1 + len(s2)) for i in range(1 + len(s1))]
@@ -178,7 +178,7 @@ class StringHelper:
     @classmethod
     def naturalSort(cls, lst):
         """
-        >>> StringHelper.naturalSort(["elem1", "elem10", "elem2", "elem20"])
+        >>> String.naturalSort(["elem1", "elem10", "elem2", "elem20"])
         ['elem1', 'elem2', 'elem10', 'elem20']
         """
         return sorted(lst, key=lambda key: [(lambda c: int(c) if c.isdigit() else c.lower())(c)

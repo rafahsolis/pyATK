@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
 
+import os
 import sys
+import argparse
 
-from pyATK.Cmd.Console.InputArgument import InputArgument
-from pyATK.Cmd.Console.InputOption import InputOption
-from pyATK.Cmd.Console.Input import Input
-from pyATK.Cmd.Console.Output import Output
+from pyATK.Cmd.Console import InputArgument
+from pyATK.Cmd.Console import InputOption
+from pyATK.Cmd.Console import Input
+from pyATK.Cmd.Console import Output
 
 
 class BaseApplication:
     """
     >>> myApp = BaseApplication()
-    >>> myApp.setName("Test App")
-    <pyATK.Cmd.Base.BaseApplication.BaseApplication object at 0x...>
-    >>> myApp.setVersion("0.0.1")
-    <pyATK.Cmd.Base.BaseApplication.BaseApplication object at 0x...>
+    >>> myApp.doConfigure()
     >>> myApp.addArgument("argument", "argument description")
     <pyATK.Cmd.Base.BaseApplication.BaseApplication object at 0x...>
     >>> myApp.addOption("o", "option", "option description")
@@ -24,46 +23,65 @@ class BaseApplication:
     STATUS_SUCCESS = 0x0
     STATUS_FAILURE = 0x1
 
-    def __init__(self):
-        self.name = ""
-        self.version = ""
+    def __init__(self, name="", version="", description=""):
+        self.name = name
+        self.version = version
+        self.description = description
         self.expectingOptions = False
         self.expectingArguments = False
-        self.input = Input()
+        self.argumentParser = argparse.ArgumentParser(prog=self.name, description=self.description)
+        self.argumentParser.add_argument('--version', action='version', version='%(prog)s 2.0')
+
+        self.input = Input(self.argumentParser)
         self.output = Output()
 
-    def setName(self, name):
-        self.name = name
+    def addOption(self, shortForm, longForm, description=None, valueRequired=InputOption.VALUE_NONE):
+        if valueRequired == InputOption.VALUE_NONE:
+            _type = bool
+        else:
+            _type = str
+        newOption = InputOption(shortForm, longForm, description, valueRequired, _type)
+        self.input.addOption(newOption)
         return self
 
-    def setVersion(self, version):
-        self.version = version
-        return self
-
-    def addOption(self, shortForm, longForm=None, description=None, optionRequired=InputOption.OPTION_NONE):
-        newOption = InputOption(shortForm, longForm, description, optionRequired)
-        self.input.registerOption(newOption)
-        return self
-
-    def addArgument(self, argumentName, description, mode=InputArgument.ARGUMENT_REQUIRED, type_=str, defaultValue=None):
-        newArgument = InputArgument(argumentName, description, mode=mode, defaultValue=defaultValue, type_=type_)
-        self.input.registerArgument(newArgument)
+    def addArgument(self, argumentName, description, type_=str, defaultValue=None):
+        newArgument = InputArgument(argumentName, description, defaultValue=defaultValue, type_=type_)
+        self.input.addArgument(newArgument)
         return self
 
     def run(self):
         self.doConfigure()
 
-        self.input.parse(sys.argv)
+        if len(sys.argv) > 1:
+            self.input.parse(sys.argv)
+
         self.doRun()
         sys.exit(self.STATUS_SUCCESS)
 
-        # except Exception as err:
-        #     print(err)
-        #     return self.STATUS_FAILURE
+    def daemonize(self):
+        try:
+            pid = os.fork()
+            if pid > 0:
+                sys.exit(self.STATUS_SUCCESS)
+        except OSError:
+            print("Unable to fork Process. Aborting ...")
+            sys.exit(self.STATUS_FAILURE)
+
+        os.chdir("/")
+        os.setsid()
+        os.umask(0)
+
+        # Second fork
+        try:
+            pid = os.fork()
+            if pid > 0:
+                sys.exit(self.STATUS_SUCCESS)
+        except OSError:
+            print("Unable to fork Process. Aborting ...")
+            sys.exit(self.STATUS_FAILURE)
 
     def doConfigure(self):
-        raise NotImplementedError("This method is not implemented!")
-
+        return
 
     def doRun(self):
-        raise NotImplementedError("This method is not implemented!")
+        return

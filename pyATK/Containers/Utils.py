@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class Container:
+class ListsHelper:
     @staticmethod
     def each(cls, collection, callback):
         pass
@@ -9,7 +9,7 @@ class Container:
     @classmethod
     def flatten(cls, collection):
         """
-        >>> Container.flatten([[[1], 2, [3, 4]], 5, [6], [7, 8, 9]])
+        >>> ListsHelper.flatten([[[1], 2, [3, 4]], 5, [6], [7, 8, 9]])
         [1, 2, 3, 4, 5, 6, 7, 8, 9]
         """
         l = []
@@ -23,11 +23,11 @@ class Container:
     @classmethod
     def unique(cls, collection):
         """
-            >>> Container.unique([1, 2, 1, 2, 5, 3, 3, 4, 4, 1, 1, 1, 4, 5, 6, 7, 7, 6, 8, 7, 8, 9])
+            >>> ListsHelper.unique([1, 2, 1, 2, 5, 3, 3, 4, 4, 1, 1, 1, 4, 5, 6, 7, 7, 6, 8, 7, 8, 9])
             [1, 2, 3, 4, 5, 6, 7, 8, 9]
-            >>> Container.unique((1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9))
+            >>> ListsHelper.unique((1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9))
             [1, 2, 3, 4, 5, 6, 7, 8, 9]
-            >>> Container.unique(['a', 'z', 'a', 'b', 'a', 'z', 'b'])
+            >>> ListsHelper.unique(['a', 'z', 'a', 'b', 'a', 'z', 'b'])
             ['a', 'b', 'z']
         """
         return sorted(list(set(collection)))
@@ -35,9 +35,9 @@ class Container:
     @classmethod
     def sameElements(cls, left, right):
         """
-            >>> Container.sameElements([1, 2, 3], [3, 2, 1])
+            >>> ListsHelper.sameElements([1, 2, 3], [3, 2, 1])
             True
-            >>> Container.sameElements([1, 2, 3], [1, 2, 3, 4])
+            >>> ListsHelper.sameElements([1, 2, 3], [1, 2, 3, 4])
             False
         """
         s1 = set(left)
@@ -53,9 +53,9 @@ class Container:
     @classmethod
     def without(cls, collection, element):
         """
-        >>> Container.without([1, 2, 3, 4, 5], 5)
+        >>> ListsHelper.without([1, 2, 3, 4, 5], 5)
         [1, 2, 3, 4]
-        >>> Container.without([1, 2, 3], 2)
+        >>> ListsHelper.without([1, 2, 3], 2)
         [1, 3]
         """
         return list(filter(lambda x: x != element, collection))
@@ -63,9 +63,9 @@ class Container:
     @classmethod
     def indexOf(cls, collection, element):
         """
-        >>> Container.indexOf("Hello There", 'e')
+        >>> ListsHelper.indexOf("Hello There", 'e')
         1
-        >>> Container.indexOf([0, 2, 3], 1)
+        >>> ListsHelper.indexOf([0, 2, 3], 1)
         -1
         """
         index = -1
@@ -78,9 +78,9 @@ class Container:
     @classmethod
     def lastIndexOf(cls, collection, element):
         """
-        >>> Container.lastIndexOf([1, 2, 3, 1, 5, 6, 1], 1)
+        >>> ListsHelper.lastIndexOf([1, 2, 3, 1, 5, 6, 1], 1)
         6
-        >>> Container.lastIndexOf([1, 2, 3, 1, 5, 6, 1], 10)
+        >>> ListsHelper.lastIndexOf([1, 2, 3, 1, 5, 6, 1], 10)
         -1
         """
         index = -1
@@ -89,3 +89,22 @@ class Container:
             if element == collection[len(collection) - index - 1]:
                 return len(collection) - index - 1
         return -1
+
+    @classmethod
+    def reverse(cls, collection):
+        """
+        >>> ListsHelper.reverse([1, 2, 3])
+        [3, 2, 1]
+        """
+        if collection is None:
+            return None
+        return [collection[len(collection) - i - 1] for i in range(0, len(collection))]
+
+    @classmethod
+    def take(cls, n, iterable):
+        import itertools
+        return list(itertools.islice(iterable, n))
+
+    @classmethod
+    def mean(cls, collection):
+        return sum(collection) / len(collection)
