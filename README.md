@@ -23,7 +23,7 @@ At the time being, only Python 3.3+ is supported.
 * Collection of helper functions
 
 #### Filesystem:
-* File systme Commands and helpers
+* File system Commands and helpers
 
 #### Serializers:
 * CSV serializer/Deserializer

@@ -3,60 +3,148 @@ from __future__ import unicode_literals
 import re
 
 
-class String:
-    @classmethod
-    def rightOf(cls, string, separator=None):
-        """
-        >>> String.rightOf('Hello World', ' ')
-        'World'
-        >>> String.rightOf('Hello World', 'Beautiful')
-        'Hello World'
-        >>> String.rightOf('Hello World')
-        'Hello World'
-        """
-        if separator is None:
-            return string
-        else:
-            if separator in string:
-                return string.split(separator, 1)[1]
-            else:
-                return string
+class String(str):
+    """
+    >>> s = String('Hello World')
+    >>> s.rightOf(' ')
+    World
+    >>> s = String('Hello World')
+    >>> s.rightOf('Beautiful')
+    Hello World
+    >>> s = String('Hello World')
+    >>> s.rightOf('Hello World')
+    <BLANKLINE>
+    >>> s = String('Hello World')
+    >>> s.leftOf(' ')
+    Hello
+    >>> s = String('Hello World')
+    >>> s.leftOf('Beautiful')
+    Hello World
+    >>> s = String('Hello World')
+    >>> s.leftOf('Hello World')
+    <BLANKLINE>
+    >>> String._upper('a')
+    'A'
+    >>> String._upper('A')
+    'A'
+    >>> String._upper('1')
+    '1'
+    >>> String._lower('A')
+    'a'
+    >>> String._lower('a')
+    'a'
+    >>> String._lower('1')
+    '1'
+    >>> s = String('hello world')
+    >>> s.capitalizeWords()
+    Hello World
+    >>> s = String('hello there')
+    >>> s.capitalize()
+    Hello there
+    >>> s = String("Je suis allé à l'école")
+    >>> s.removeAccents()
+    Je suis alle a l'ecole
+    >>> String.levenshtein("Hello", "Hell")
+    1
+    >>> String.levenshtein("Cat", "cat")
+    1
+    >>> String.levenshtein("Cat", "Dog")
+    3
+    >>> String.levenshtein("Cat", "Dodge")
+    5
+    >>> String.levenshtein("Cat", "")
+    3
+    """
 
-    @classmethod
-    def leftOf(cls, string, separator=None):
-        """
-        >>> String.leftOf('Hello World', ' ')
-        'Hello'
-        >>> String.leftOf('Hello World', 'Beautiful')
-        'Hello World'
-        >>> String.leftOf('Hello World')
-        'Hello World'
-        """
+    def __init__(self, s):
+        super().__init__()
+        self._s = s
+
+    def __str__(self):
+        return self._s
+
+    def __repr__(self):
+        return self.__str__()
+
+    def toString(self):
+        return str(self._s)
+
+    def rightOf(self, separator=None):
         if separator is None:
-            return string
+            return self
         else:
-            if separator in string:
-                return string.split(separator, 1)[0]
+            if separator in self._s:
+                self._s = self._s.split(separator, 1)[1]
             else:
-                return string
+                pass
+        return self
+
+    def leftOf(self, separator=None):
+        if separator is None:
+            return self
+        else:
+            if separator in self._s:
+                self._s = self._s.split(separator, 1)[0]
+            else:
+                pass
+            return self
+
+    @staticmethod
+    def _upper(c):
+        if ord(c) in range(97, 122):
+            return chr(ord(c) - 32)
+        return c
+
+    def upper(self):
+        """
+        """
+        s = self._s
+        self._s = "".join([String._upper(c) for c in s])
+        return self
+
+    @staticmethod
+    def _lower(c):
+        if ord(c) in range(65, 90):
+            return chr(ord(c) + 32)
+        return c
+
+    def lower(self):
+        """
+        """
+        self._s = "".join([String._lower(c) for c in self._s])
+        return self
+
+    def capitalize(self):
+        """
+        """
+        if self._s is None:
+            return self
+        s = self._s
+        self._s = self._upper(s[0]) + s[1:].lower()
+        return self
+
+    def capitalizeWords(self):
+        """
+        """
+        self._s = " ".join([String(word).capitalize().toString() for word in self._s.split(" ")])
+        return self
+
+    def removeAccents(self):
+        """
+        """
+        for plain, funny_set in (('a', 'áàâãäå\u0101'), ('e', 'éèêẽë'), ('i', "íìîĩï"), ('o', 'óòôõöø'),
+                                 ('u', "úùûũü"), ('A', 'ÁÀÂÃÄÅ'), ('E', 'ÉÈÊẼË'), ('I', "ÍÌÎĨÏ"),
+                                 ('O', 'ÓÒÔÕÖØ'), ('U', "ÚÙÛŨÜ"), ('n', "ñ"), ('c', "ç"), ('N', "Ñ"),
+                                 ('C', "Ç"), ('d', "Þ"), ('ss', "ß"), ('ae', "æ"), ('oe', 'œ')):
+            for funny in funny_set:
+                self._s = self._s.replace(funny, plain)
+        return self
 
     @classmethod
     def ordinal(cls, n):
         """
         Formats an ordinal.
         Doesn't handle negative numbers.
-        >>> String.ordinal(-1)
-
-        >>> String.ordinal(1)
-        '1st'
-        >>> String.ordinal(0)
-        '0th'
-        >>> String.ordinal(13)
-        '13th'
-        >>> String.ordinal(101)
-        '101st'
-        >>> [String.ordinal(x) for x in [111, 112, 113, 114, 115]]
-        ['111th', '112th', '113th', '114th', '115th']
         """
         if n < 0:
             return None
@@ -65,78 +153,8 @@ class String:
         return str(n) + {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
 
     @classmethod
-    def upper(cls, c):
-        """
-        >>> String.upper('a')
-        'A'
-        >>> String.upper('A')
-        'A'
-        >>> String.upper('1')
-        '1'
-        """
-        if ord(c) in range(97, 122):
-            return chr(ord(c) - 32)
-        return c
-
-    @classmethod
-    def lower(cls, c):
-        """
-        >>> String.lower('A')
-        'a'
-        >>> String.lower('a')
-        'a'
-        >>> String.lower('1')
-        '1'
-        """
-        if ord(c) in range(65, 90):
-            return chr(ord(c) + 32)
-        return c
-
-    @classmethod
-    def capitalize(cls, s):
-        """
-        >>> String.capitalize('hello there')
-        'Hello there'
-        >>> String.capitalize('Hello there')
-        'Hello there'
-        """
-        return cls.upper(s[0]) + s[1:]
-
-    @classmethod
-    def capitalizeWords(cls, s):
-        """
-        >>> String.capitalizeWords("hello world")
-        'Hello World'
-        """
-        return " ".join([cls.capitalize(s) for s in s.split(" ")])
-
-    @classmethod
-    def removeAccents(cls, text):
-        """
-        >>> String.removeAccents("Je suis allé à l'école")
-        "Je suis alle a l'ecole"
-        """
-        for plain, funny_set in (('a', 'áàâãäå\u0101'), ('e', 'éèêẽë'), ('i', "íìîĩï"), ('o', 'óòôõöø'),
-                                 ('u', "úùûũü"), ('A', 'ÁÀÂÃÄÅ'), ('E', 'ÉÈÊẼË'), ('I', "ÍÌÎĨÏ"),
-                                 ('O', 'ÓÒÔÕÖØ'), ('U', "ÚÙÛŨÜ"), ('n', "ñ"), ('c', "ç"), ('N', "Ñ"),
-                                 ('C', "Ç"), ('d', "Þ"), ('ss', "ß"), ('ae', "æ"), ('oe', 'œ')):
-            for funny in funny_set:
-                text = text.replace(funny, plain)
-        return text
-
-    @classmethod
     def levenshtein(cls, s1, s2):
         """
-        >>> String.levenshtein("Hello", "Hell")
-        1
-        >>> String.levenshtein("Cat", "cat")
-        1
-        >>> String.levenshtein("Cat", "Dog")
-        3
-        >>> String.levenshtein("Cat", "Dodge")
-        5
-        >>> String.levenshtein("Cat", "")
-        3
         """
         if len(s1) < len(s2):
             return cls.levenshtein(s2, s1)

@@ -22,7 +22,7 @@ class Regex:
         >>> Regex.isReal('.9')
         True
         >>> Regex.isReal('0')
-        True
+        False
         >>> Regex.isReal('0.0')
         True
         >>> Regex.isReal('0.')
@@ -32,11 +32,11 @@ class Regex:
         >>> Regex.isReal('0..0')
         False
         >>> Regex.isReal('01')
-        True
+        False
         >>> Regex.isReal('0.0.')
         False
         """
-        if re.match("^[-+]?\d*((\.(?=\d)\d+)?|\.)$", n):
+        if re.match("^[-+]?(\d+\.\d*|\.\d+)$", n):
             return True
         return False
 

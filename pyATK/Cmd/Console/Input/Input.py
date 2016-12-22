@@ -11,77 +11,72 @@ class Input:
     >>> input = Input(parser)
     >>> arg = InputArgument("first-argument", "")
     >>> input.addArgument(arg)
-    >>> opt = InputOption("help", "null description", InputOption.VALUE_REQUIRED)
-    >>> input.addOption(opt)
     """
 
     HELP_REQUIRED = 0x01
 
     def __init__(self, parser):
-        self.arguments = []
-        self.options = {}
-        self.parser = parser
-        self.isInteractive = False
+        self._arguments = {}
+        self._options = {}
+        self._parser = parser
+        self._isInteractive = False
 
     def getArgument(self, argName):
-        for argument in self.arguments:
-            if argName in argument.name:
+        for argumentName, argument in self._arguments.items():
+            if argName in argument.getName():
                 return argument
         raise Exception("Argument " + argName + " was not found")
 
     def addArgument(self, argument):
-        self.arguments.append(argument)
-        self.parser.add_argument(argument.name,
-                                 action='store',
-                                 type=argument.type,
-                                 default=argument.defaultValue,
-                                 help=argument.description)
+        self._arguments[argument.getName()] = argument
+        self._parser.add_argument(argument.getName(),
+                                  action='store',
+                                  type=argument.getType(),
+                                  default=argument.getDefaultValue(),
+                                  help=argument.getDescription())
 
     def getOption(self, optName):
         while optName[0] == '-':
             optName = optName[1:]
 
-        return self.options[optName]
+        return self._options[optName]
 
     def addOption(self, option):
-        self.options[option.name] = option
-        if option.mode == InputOption.VALUE_NONE:
-            self.parser.add_argument(option.shortForm,
-                                     option.longForm,
-                                     action="store_true")
+        self._options[option.getName()] = option
+        if option.getMode() == InputOption.VALUE_NONE:
+            self._parser.add_argument(option.getShortForm(),
+                                      option.getLongForm(),
+                                      action="store_true")
         else:
-            self.parser.add_argument(option.shortForm,
-                                     option.longForm,
-                                     action="store")
+            self._parser.add_argument(option.getShortForm(),
+                                      option.getLongForm(),
+                                      action="store")
         #
         # TODO: Support ARRAY_VALUE for options
         #
 
     def setInteractive(self, interactive):
-        self.isInteractive = interactive
-
-    def getInteractive(self):
-        return self.isInteractive
+        self._isInteractive = interactive
 
     def isInteractive(self):
-        return self.isInteractive is True
+        return self._isInteractive is True
 
     def parse(self, cli_args):
-        parsed = self.parser.parse_args(cli_args[1:])
-        for option in self.options:
-            if hasattr(parsed, option.name):
-                option.setValue(getattr(parsed, option.name))
+        parsed = self._parser.parse_args(cli_args[1:])
+        for optionName, option in self._options.items():
+            if hasattr(parsed, optionName):
+                option.setValue(getattr(parsed, optionName))
                 option.setDefined(True)
 
-        for argument in self.arguments:
-            if hasattr(parsed, argument.name) and getattr(parsed, argument.name) is not None:
-                argument.setValue(getattr(parsed, argument.name))
+        for argument in self._arguments:
+            if hasattr(parsed, argument.getName()) and getattr(parsed, argument.getName) is not None:
+                argument.setValue(getattr(parsed, argument.getName()))
 
     def validate(self):
-        for option in self.options:
+        for option in self._options:
             if option.isDefined() is False:
                 continue
-            if option.getValue() is None and option.mode != InputOption.VALUE_NONE:
+            if option.getValue() is None and option.getMode() != InputOption.VALUE_NONE:
                 raise Exception("Missing option value")
         return True
 

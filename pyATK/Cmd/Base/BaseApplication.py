@@ -24,36 +24,36 @@ class BaseApplication:
     STATUS_FAILURE = 0x1
 
     def __init__(self, name="", version="", description=""):
-        self.name = name
-        self.version = version
-        self.description = description
-        self.expectingOptions = False
-        self.expectingArguments = False
-        self.argumentParser = argparse.ArgumentParser(prog=self.name, description=self.description)
-        self.argumentParser.add_argument('--version', action='version', version='%(prog)s 2.0')
+        self._name = name
+        self._version = version
+        self._description = description
+        self._expectingOptions = False
+        self._expectingArguments = False
+        self._argumentParser = argparse.ArgumentParser(prog=self._name, description=self._description)
+        self._argumentParser.add_argument('--version', action='version', version='%(prog)s 2.0')
 
-        self.input = Input(self.argumentParser)
-        self.output = Output()
+        self._input = Input(self._argumentParser)
+        self._output = Output()
 
-    def addOption(self, shortForm, longForm, description=None, valueRequired=InputOption.VALUE_NONE):
+    def addOption(self, longForm, shortForm, description=None, valueRequired=InputOption.VALUE_NONE):
         if valueRequired == InputOption.VALUE_NONE:
             _type = bool
         else:
             _type = str
-        newOption = InputOption(shortForm, longForm, description, valueRequired, _type)
-        self.input.addOption(newOption)
+        newOption = InputOption(longForm, shortForm, description, valueRequired, _type)
+        self._input.addOption(newOption)
         return self
 
     def addArgument(self, argumentName, description, type_=str, defaultValue=None):
         newArgument = InputArgument(argumentName, description, defaultValue=defaultValue, type_=type_)
-        self.input.addArgument(newArgument)
+        self._input.addArgument(newArgument)
         return self
 
     def run(self):
         self.doConfigure()
 
         if len(sys.argv) > 1:
-            self.input.parse(sys.argv)
+            self._input.parse(sys.argv)
 
         self.doRun()
         sys.exit(self.STATUS_SUCCESS)
